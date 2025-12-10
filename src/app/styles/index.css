@@ -4,6 +4,7 @@
 :root {
   --font-sans: "MonaSans", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
+  --theme-color: #34a853;
 }
 
 body {
