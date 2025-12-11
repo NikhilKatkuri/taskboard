@@ -4,6 +4,7 @@ import Landing from "./pages/Landing";
 import NewTask from "./pages/Task/NewTask";
 import Login from "./pages/auth/Login";
 import Registration from "./pages/auth/Registration";
+import { AuthProvider } from "../context/auth/auth.provider";
 
 function Routers({ isLogin }: { isLogin: boolean }) {
   return (
@@ -34,7 +35,11 @@ function Routers({ isLogin }: { isLogin: boolean }) {
   );
 }
 function App() {
-  const isLogin: boolean = false;
-  return <Routers isLogin={isLogin} />;
+  const isLogin: boolean = true;
+  return (
+    <AuthProvider>
+      <Routers isLogin={isLogin} />
+    </AuthProvider>
+  );
 }
 export default App;

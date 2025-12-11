@@ -2,9 +2,11 @@
 @import "./font.css";
 
 :root {
-  --font-sans: "MonaSans", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, sans-serif;
-  --theme-color: #34a853;
+  --font-sans: "Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  --font-italic-sans: "Sans italic";
+  --theme-color: #0fba3d;
+  /* --theme-color: #34a853; */
 }
 
 body {

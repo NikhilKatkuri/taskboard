@@ -1,82 +1,17 @@
-/* monasans semicondensed font family */
-
 @font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-ExtraLight.ttf") format("truetype");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-Light.ttf") format("truetype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-MediumItalic.ttf") format("truetype");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-SemiBold.ttf") format("truetype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-SemiBoldItalic.ttf")
+  font-family: "Sans";
+  src: url("/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf")
     format("truetype");
-  font-weight: 600;
+  font-weight: 300 400 500 600 700 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sans italic";
+  src: url("/fonts/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf")
+    format("truetype");
+  font-weight: 300 400 500 600 700 800 900;
   font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "MonaSans";
-  src: url("/fonts/MonaSans_SemiCondensed-Black.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal;
   font-display: swap;
 }
