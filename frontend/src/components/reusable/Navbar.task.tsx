@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import SkeletonLoader from "./SkeletonLoader";
 
 interface NavbarProps {
@@ -5,6 +6,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ setisSearchBoxOpen }: NavbarProps) => {
+  const nav = useNavigate();
   return (
     <header className="w-full sticky top-0 z-10 h-16 bg-white flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
@@ -41,7 +43,12 @@ const Navbar = ({ setisSearchBoxOpen }: NavbarProps) => {
             />
           </svg>
         </button>
-        <button className="max-[440px]:aspect-square max-[440px]:px-2 min-[440px]:px-4  text-center text-sm font-medium min-[440px]:space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer">
+        <button
+          onClick={() => {
+            nav("/new");
+          }}
+          className="max-[440px]:aspect-square max-[440px]:px-2 min-[440px]:px-4  text-center text-sm font-medium min-[440px]:space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

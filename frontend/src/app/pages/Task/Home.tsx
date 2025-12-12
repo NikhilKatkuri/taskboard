@@ -1,18 +1,23 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/reusable/Navbar.task";
 import SkeletonLoader from "../../../components/reusable/SkeletonLoader";
+import { useNavigate } from "react-router-dom";
 
 interface Panigation {
   currPage: number;
   totalPage: number;
 }
 const Home = () => {
+  const nav = useNavigate();
+
   const MaxPages = 5;
   const [panigation, setPanigation] = useState<Panigation>({
     currPage: 0,
-    totalPage: 50,
+    totalPage: 0,
   });
+
   const [isSearchBoxOpen, setisSearchBoxOpen] = useState<boolean>(false);
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -25,13 +30,60 @@ const Home = () => {
     };
   }, []);
 
+  const tasks = [];
+
   return (
     <div className="h-screen w-full relative">
       <Navbar setisSearchBoxOpen={setisSearchBoxOpen} />
-      <section className="h-[calc(100vh-4rem)] w-full px-2 sm:px-4 overflow-hidden grid grid-rows-[auto_40px] pb-3 max-w-6xl mx-auto">
-        <div className="h-full w-full  overflow-y-scroll no-scrollbar"></div>
-        <div className="h-10 w-full flex items-center justify-center">
-          {panigation.totalPage > 1 && (
+      <section
+        className={`h-[calc(100vh-4rem)] w-full px-2 sm:px-4 overflow-hidden grid ${
+          panigation.totalPage > 1 ? "grid-rows-[auto_40px]" : "grid-rows-1 "
+        } pb-3 max-w-6xl mx-auto`}
+      >
+        <div className="h-full w-full  overflow-y-scroll no-scrollbar">
+          {tasks.length === 0 ? (
+            <div className="h-full w-full flex flex-col items-center justify-center gap-4">
+              <img
+                src="/imgs/no-task.svg"
+                className="aspect-square max-w-64 md:max-w-80  xxl:max-w-md"
+              />
+              <p className="text-gray-500 text-sm font-medium">
+                No tasks found.
+              </p>
+              <p className="text-gray-500 text-xs max-w-72 text-center">
+                Click “Create Task” to add your first task and get started.
+              </p>
+              <button
+                onClick={() => {
+                  nav("/new");
+                }}
+                className="px-4  text-center text-sm font-medium  space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                <span className="max-[440px]:hidden">Create Task</span>
+              </button>
+            </div>
+          ) : (
+            <div className="w-full h-full grid grid-cols-1 gap-2">
+              {/* Render tasks here */}
+            </div>
+          )}
+        </div>
+        {panigation.totalPage > 1 && (
+          <div className="h-10 w-full flex items-center justify-center">
             <nav className="w-full sm:w-auto h-10  flex  items-center justify-center gap-1 sm:max-w-lg">
               <button
                 onClick={() => {
@@ -81,7 +133,10 @@ const Home = () => {
                   return (
                     <li
                       onClick={() => {
-                        setPanigation((prev) => ({ ...prev, currPage: index }));
+                        setPanigation((prev) => ({
+                          ...prev,
+                          currPage: index,
+                        }));
                       }}
                       key={index}
                       className={`h-8 w-8 flex items-center text-gray-700 justify-center mx-1 rounded-lg cursor-pointer hover:bg-gray-200/60 transition-colors ${
@@ -133,8 +188,8 @@ const Home = () => {
                 </span>
               </button>
             </nav>
-          )}
-        </div>
+          </div>
+        )}
       </section>
       {isSearchBoxOpen && (
         <div
