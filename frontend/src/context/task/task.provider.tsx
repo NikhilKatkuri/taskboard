@@ -3,11 +3,11 @@ import TaskContext from "./task.context";
 import type { Panigation } from "@schemas/task/context";
 import type { task } from "@schemas/task/Task";
 import { mockTasks } from "@assets/mockTask";
-import type { Priorities } from "@schemas/task/priority";
+import type { Priority } from "@schemas/task/priority";
 import type { Status } from "@schemas/task/status";
 
 const TaskProvider = ({ children }: { children: React.ReactNode }) => {
-  const priorities: Priorities[] = ["Low", "Medium", "High"];
+  const priorities: Priority[] = ["Low", "Medium", "High"];
   const statuses: Status[] = ["todo", "in-progress", "review", "done"];
 
   // search box state

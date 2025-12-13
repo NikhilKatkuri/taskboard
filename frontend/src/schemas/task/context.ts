@@ -1,4 +1,4 @@
-import type { Priorities } from "./priority";
+import type { Priority } from "./priority";
 import type { Status } from "./status";
 import type { task } from "./Task";
 
@@ -19,6 +19,6 @@ export interface TaskContextType {
   setTasks: React.Dispatch<React.SetStateAction<task[]>>;
   Task: task | undefined;
   setTask: React.Dispatch<React.SetStateAction<task | undefined>>;
-  priorities: Priorities[];
+  priorities: Priority[];
   statuses: Status[];
 }

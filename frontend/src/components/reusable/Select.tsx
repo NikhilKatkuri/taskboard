@@ -6,24 +6,29 @@ interface statusType<T> {
 
 interface SelectProps<T> {
   status: statusType<T>;
-  setstatus: React.Dispatch<React.SetStateAction<statusType<T>>>;
   statuses: T[];
   label: string;
+  selectActions: {
+    setLabel: (label: T) => void;
+    setValue: (value: T) => void;
+    setIsOpen: (isOpen: boolean) => void;
+    toggleOpen: () => void;
+  };
 }
 
-const Select = <T extends string>({
+function Select<T extends string>({
   status,
-  setstatus,
   statuses,
   label,
-}: SelectProps<T>) => {
+  selectActions,
+}: SelectProps<T>) {
   return (
     <div className="w-full h-full grid grid-cols-1 grid-rows-[20px_auto] gap-1">
       <label className="text-sm font-medium cursor-pointer">{label}</label>
       <div className="relative">
         <button
           onClick={() => {
-            setstatus((prev) => ({ ...prev, isOpen: true }));
+            selectActions.toggleOpen();
           }}
           className="flex items-center justify-between w-full h-auto text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors hover:bg-gray-100 cursor-pointer"
         >
@@ -51,13 +56,11 @@ const Select = <T extends string>({
               <button
                 key={index}
                 className="grid grid-cols-[36px_auto] gap-2 items-center w-full p-3 rounded-lg hover:bg-gray-100"
-                onClick={() =>
-                  setstatus({
-                    label: status,
-                    value: status,
-                    isOpen: false,
-                  })
-                }
+                onClick={() => {
+                  selectActions.setLabel(status);
+                  selectActions.setValue(status);
+                  selectActions.toggleOpen();
+                }}
               >
                 <div className="h-4 w-4 rounded-full bg-green-500/30 " />
                 <p className="text-sm text-left">{status}</p>
@@ -68,6 +71,6 @@ const Select = <T extends string>({
       </div>
     </div>
   );
-};
+}
 
 export default Select;

@@ -1,27 +1,19 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "@components/reusable/Input";
 import Select from "@components/reusable/Select";
 import useTask from "@context/task/useTask";
 import type { Priority } from "@schemas/task/priority";
-import type { StatusType } from "@schemas/task/status";
+import type { Status } from "@schemas/task/status";
+import useDropDown from "@hooks/useDropDown";
 
 const NewTask = () => {
   const nav = useNavigate();
 
   const { priorities, statuses } = useTask();
 
-  const [priority, setPriority] = useState<Priority>({
-    label: priorities[1],
-    value: priorities[1],
-    isOpen: false,
-  });
+  const [priority, priorityActions] = useDropDown<Priority>(priorities[1]);
 
-  const [status, setStatus] = useState<StatusType>({
-    label: statuses[0],
-    value: statuses[0],
-    isOpen: false,
-  });
+  const [status, statusActions] = useDropDown<Status>(statuses[0]);
 
   return (
     <>
@@ -101,15 +93,15 @@ const NewTask = () => {
                   </div>
                   <Select
                     status={priority}
-                    setstatus={setPriority}
+                    selectActions={priorityActions}
                     statuses={priorities}
-                    label="Priority"
+                    label={"Priority"}
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3 h-16">
                   <Select
                     status={status}
-                    setstatus={setStatus}
+                    selectActions={statusActions}
                     statuses={statuses}
                     label="Status"
                   />
