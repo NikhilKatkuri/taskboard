@@ -5,6 +5,7 @@ import NewTask from "./pages/Task/NewTask";
 import Login from "./pages/auth/Login";
 import Registration from "./pages/auth/Registration";
 import { AuthProvider } from "../context/auth/auth.provider";
+import Task from "./pages/Task/Task";
 
 function Routers({ isLogin }: { isLogin: boolean }) {
   return (
@@ -14,14 +15,7 @@ function Routers({ isLogin }: { isLogin: boolean }) {
           <>
             <Route path="/" element={<Home />} />
             <Route path="/new" element={<NewTask />} />
-            <Route
-              path="/tasks/:id"
-              Component={() => (
-                <>
-                  <div>id</div>
-                </>
-              )}
-            />
+            <Route path="/tasks/:taskId" element={<Task />} />
           </>
         ) : (
           <>
