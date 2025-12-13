@@ -14,6 +14,7 @@ interface SelectProps<T> {
     setIsOpen: (isOpen: boolean) => void;
     toggleOpen: () => void;
   };
+  showLabel?: boolean;
 }
 
 function Select<T extends string>({
@@ -21,10 +22,17 @@ function Select<T extends string>({
   statuses,
   label,
   selectActions,
+  showLabel = true,
 }: SelectProps<T>) {
   return (
-    <div className="w-full h-full grid grid-cols-1 grid-rows-[20px_auto] gap-1">
-      <label className="text-sm font-medium cursor-pointer">{label}</label>
+    <div
+      className={`w-full h-full ${
+        showLabel ? "grid grid-cols-1 grid-rows-[20px_auto]" : ""
+      } gap-1`}
+    >
+      {showLabel && (
+        <label className="text-sm font-medium cursor-pointer">{label}</label>
+      )}
       <div className="relative">
         <button
           onClick={() => {
@@ -32,7 +40,7 @@ function Select<T extends string>({
           }}
           className="flex items-center justify-between w-full h-auto text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors hover:bg-gray-100 cursor-pointer"
         >
-          <p>{status.label}</p>
+          <p>{status.label.charAt(0).toUpperCase() + status.label.slice(1)}</p>
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +71,9 @@ function Select<T extends string>({
                 }}
               >
                 <div className="h-4 w-4 rounded-full bg-green-500/30 " />
-                <p className="text-sm text-left">{status}</p>
+                <p className="text-sm text-left">
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                </p>
               </button>
             ))}
           </div>

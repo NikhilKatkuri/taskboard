@@ -1,4 +1,5 @@
-import type { priority, status } from ".";
+import type { status } from ".";
+import type { Priority } from "./priority";
 
 interface TimeDate {
   date: string;
@@ -10,7 +11,7 @@ export interface task {
   title: string;
   description: string;
   dueAt: TimeDate;
-  priority: priority.Priorities;
+  priority: Priority;
   status: status.Status;
   tags: string[];
   assignee: string;

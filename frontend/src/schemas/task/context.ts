@@ -9,7 +9,7 @@ export interface Panigation {
 
 export interface TaskContextType {
   isSearchBoxOpen: boolean;
-  setIsSearchBoxOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSearchBox: () => void;
   panigation: Panigation;
   setPanigation: React.Dispatch<React.SetStateAction<Panigation>>;
   viewData: (data: task[]) => task[];

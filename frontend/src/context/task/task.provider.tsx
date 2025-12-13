@@ -13,17 +13,20 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   // search box state
   const [isSearchBoxOpen, setIsSearchBoxOpen] = useState<boolean>(false);
 
+  const toggleSearchBox = () => {
+    setIsSearchBoxOpen((prev) => !prev);
+  };
+
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isSearchBoxOpen) {
         setIsSearchBoxOpen(false);
       }
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isSearchBoxOpen, setIsSearchBoxOpen]);
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isSearchBoxOpen]);
 
   // panigation state
   const [panigation, setPanigation] = useState<Panigation>({
@@ -47,7 +50,7 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setTasks(mockTasks);
+      setTasks([...mockTasks].reverse());
       setPanigation({
         currPage: 0,
         totalPage: Math.ceil(mockTasks.length / maxPerPage),
@@ -70,6 +73,7 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     setTask,
     priorities,
     statuses,
+    toggleSearchBox,
   };
 
   return <TaskContext.Provider value={values}>{children}</TaskContext.Provider>;

@@ -4,7 +4,7 @@ import useTask from "@context/task/useTask";
 
 const Navbar = () => {
   const nav = useNavigate();
-  const { setIsSearchBoxOpen } = useTask();
+  const { toggleSearchBox } = useTask();
 
   return (
     <header className="w-full sticky top-0 z-10 h-16 bg-white flex items-center justify-between px-4">
@@ -23,7 +23,7 @@ const Navbar = () => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => {
-            setIsSearchBoxOpen((prev) => !prev);
+            toggleSearchBox();
           }}
           className="aspect-square h-10 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
         >
