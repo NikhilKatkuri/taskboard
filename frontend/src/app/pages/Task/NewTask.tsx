@@ -1,23 +1,28 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { status, priority } from "../../../types/task";
-import Input from "../../../components/reusable/Input";
-import Select from "../../../components/reusable/Select";
+import Input from "@components/reusable/Input";
+import Select from "@components/reusable/Select";
+import useTask from "@context/task/useTask";
+import type { Priority } from "@schemas/task/priority";
+import type { StatusType } from "@schemas/task/status";
 
 const NewTask = () => {
   const nav = useNavigate();
-  const priorities: priority.Priorities[] = ["Low", "Medium", "High"];
-  const statuses: status.Status[] = ["todo", "in-progress", "review", "done"];
-  const [priority, setPriority] = useState<priority.Priority>({
+
+  const { priorities, statuses } = useTask();
+
+  const [priority, setPriority] = useState<Priority>({
     label: priorities[1],
     value: priorities[1],
     isOpen: false,
   });
-  const [status, setStatus] = useState<status.StatusType>({
+
+  const [status, setStatus] = useState<StatusType>({
     label: statuses[0],
     value: statuses[0],
     isOpen: false,
   });
+
   return (
     <>
       <div className="h-screen w-screen sm:p-2 lg:p-3 xl:p-4">

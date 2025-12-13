@@ -21,4 +21,13 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
   },
+  resolve: {
+    alias: {
+      "@app": path.resolve(__dirname, "./src/app"),
+      "@assets": path.resolve(__dirname, "./src/assets"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@context": path.resolve(__dirname, "./src/context"),
+      "@schemas": path.resolve(__dirname, "./src/schemas"),
+    },
+  },
 });

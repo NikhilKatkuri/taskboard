@@ -1,47 +1,29 @@
-import { useEffect, useState } from "react";
-import Navbar from "../../../components/reusable/Navbar.task";
-import SkeletonLoader from "../../../components/reusable/SkeletonLoader";
+import Navbar from "@components/reusable/Navbar.task";
+import SkeletonLoader from "@components/reusable/SkeletonLoader";
 import { useNavigate } from "react-router-dom";
+import TaskCard from "@components/reusable/TaskCard";
+import useTask from "@context/task/useTask";
 
-interface Panigation {
-  currPage: number;
-  totalPage: number;
-}
 const Home = () => {
   const nav = useNavigate();
-
-  const MaxPages = 5;
-  const [panigation, setPanigation] = useState<Panigation>({
-    currPage: 0,
-    totalPage: 0,
-  });
-
-  const [isSearchBoxOpen, setisSearchBoxOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setisSearchBoxOpen(false);
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  const tasks = [];
+  const {
+    isSearchBoxOpen,
+    setIsSearchBoxOpen,
+    panigation,
+    setPanigation,
+    viewData,
+    Tasks: data,
+    MaxPagesLength,
+  } = useTask();
 
   return (
     <div className="h-screen w-full relative">
-      <Navbar setisSearchBoxOpen={setisSearchBoxOpen} />
+      <Navbar />
       <section
-        className={`h-[calc(100vh-4rem)] w-full px-2 sm:px-4 overflow-hidden grid ${
-          panigation.totalPage > 1 ? "grid-rows-[auto_40px]" : "grid-rows-1 "
-        } pb-3 max-w-6xl mx-auto`}
+        className={`h-[calc(100vh-4rem)] w-full px-2 sm:px-4 overflow-hidden flex flex-col items-center justify-center pb-3 max-w-6xl mx-auto relative`}
       >
-        <div className="h-full w-full  overflow-y-scroll no-scrollbar">
-          {tasks.length === 0 ? (
+        <div className="h-full w-full scroll-smooth overflow-y-scroll no-scrollbar">
+          {!(data && data.length > 0) ? (
             <div className="h-full w-full flex flex-col items-center justify-center gap-4">
               <img
                 src="/imgs/no-task.svg"
@@ -57,7 +39,7 @@ const Home = () => {
                 onClick={() => {
                   nav("/new");
                 }}
-                className="px-4  text-center text-sm font-medium  space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer"
+                className="px-4  text-center text-sm font-medium space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -77,13 +59,16 @@ const Home = () => {
               </button>
             </div>
           ) : (
-            <div className="w-full h-full grid grid-cols-1 gap-2">
-              {/* Render tasks here */}
+            <div className="w-full h-full grid grid-cols-1 max-w-2xl  mx-auto gap-2 py-3">
+              {viewData(data).map((taskItem, index) => {
+                return <TaskCard key={index} task={taskItem} />;
+              })}
+              <div className="h-16 "></div>
             </div>
           )}
         </div>
         {panigation.totalPage > 1 && (
-          <div className="h-10 w-full flex items-center justify-center">
+          <div className=" w-full flex items-center absolute bottom-0 py-3 h-16 bg-linear-90 from-white/80 via-gray/50 to-white/80 max-w-2xl mx-auto justify-center">
             <nav className="w-full sm:w-auto h-10  flex  items-center justify-center gap-1 sm:max-w-lg">
               <button
                 onClick={() => {
@@ -97,7 +82,7 @@ const Home = () => {
                   panigation.currPage === 0
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:bg-gray-200/60"
-                } bg-transparent transition-colors`}
+                } bg-transparent transition-colors md:pr-3`}
               >
                 <span>
                   <svg
@@ -122,11 +107,11 @@ const Home = () => {
                   const isActive = index === panigation.currPage;
                   const startPage = Math.max(
                     0,
-                    panigation.currPage - Math.floor(MaxPages / 2)
+                    panigation.currPage - Math.floor(MaxPagesLength / 2)
                   );
                   const endPage = Math.min(
                     panigation.totalPage,
-                    startPage + MaxPages
+                    startPage + MaxPagesLength
                   );
                   if (index >= endPage || index < startPage) return null;
 
@@ -167,7 +152,7 @@ const Home = () => {
                       ? "opacity-50 cursor-not-allowed"
                       : "cursor-pointer hover:bg-gray-200/60"
                   } 
-                  `}
+                  md:pl-3`}
               >
                 <p className="max-sm:hidden">Next</p>
                 <span>
@@ -191,10 +176,11 @@ const Home = () => {
           </div>
         )}
       </section>
+
       {isSearchBoxOpen && (
         <div
           onClick={() => {
-            setisSearchBoxOpen(!isSearchBoxOpen);
+            setIsSearchBoxOpen(!isSearchBoxOpen);
           }}
           className="fixed top-0 left-0 h-screen w-screen bg-gray-900/10 flex items-center justify-center px-3 z-20 backdrop-blur-sm"
         >

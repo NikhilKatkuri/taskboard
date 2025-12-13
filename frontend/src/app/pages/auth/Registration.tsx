@@ -1,4 +1,4 @@
-import { useAuth } from "../../../context/auth/useAuth";
+import { useAuth } from "@context/auth/useAuth";
 
 const Registration = () => {
   const { clientCredentials, handleChange } = useAuth();

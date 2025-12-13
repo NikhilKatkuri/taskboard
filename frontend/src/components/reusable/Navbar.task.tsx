@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import SkeletonLoader from "./SkeletonLoader";
+import useTask from "@context/task/useTask";
 
-interface NavbarProps {
-  setisSearchBoxOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Navbar = ({ setisSearchBoxOpen }: NavbarProps) => {
+const Navbar = () => {
   const nav = useNavigate();
+  const { setIsSearchBoxOpen } = useTask();
+
   return (
     <header className="w-full sticky top-0 z-10 h-16 bg-white flex items-center justify-between px-4">
       <div className="flex items-center gap-4">
@@ -24,7 +23,7 @@ const Navbar = ({ setisSearchBoxOpen }: NavbarProps) => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => {
-            setisSearchBoxOpen((prev) => !prev);
+            setIsSearchBoxOpen((prev) => !prev);
           }}
           className="aspect-square h-10 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
         >

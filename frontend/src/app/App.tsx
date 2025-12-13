@@ -4,8 +4,9 @@ import Landing from "./pages/Landing";
 import NewTask from "./pages/Task/NewTask";
 import Login from "./pages/auth/Login";
 import Registration from "./pages/auth/Registration";
-import { AuthProvider } from "../context/auth/auth.provider";
+import { AuthProvider } from "@context/auth/auth.provider";
 import Task from "./pages/Task/Task";
+import TaskProvider from "@context/task/task.provider";
 
 function Routers({ isLogin }: { isLogin: boolean }) {
   return (
@@ -32,7 +33,9 @@ function App() {
   const isLogin: boolean = true;
   return (
     <AuthProvider>
-      <Routers isLogin={isLogin} />
+      <TaskProvider>
+        <Routers isLogin={isLogin} />
+      </TaskProvider>
     </AuthProvider>
   );
 }

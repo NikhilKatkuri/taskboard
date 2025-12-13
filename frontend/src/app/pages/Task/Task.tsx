@@ -1,44 +1,44 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { status, priority } from "../../../types/task";
-import Input from "../../../components/reusable/Input";
-import Select from "../../../components/reusable/Select";
-import type { task } from "../../../types/task/task";
-import { mockTasks } from "../../../assets/mockTask";
-import SkeletonLoader from "../../../components/reusable/SkeletonLoader";
+import Input from "@components/reusable/Input";
+import Select from "@components/reusable/Select";
+import type { task } from "@schemas/task/Task";
+import { mockTasks } from "@assets/mockTask";
+import SkeletonLoader from "@components/reusable/SkeletonLoader";
+import useTask from "@context/task/useTask";
+import type { Priority } from "@schemas/task/priority";
+import type { StatusType } from "@schemas/task/status";
 
 const Task = () => {
   const nav = useNavigate();
-  const priorities: priority.Priorities[] = ["Low", "Medium", "High"];
-  const statuses: status.Status[] = ["todo", "in-progress", "review", "done"];
+  const { Task: data, setTask: setData, priorities, statuses } = useTask();
 
-  const [priority, setPriority] = useState<priority.Priority>({
+  const [priority, setPriority] = useState<Priority>({
     label: priorities[1],
     value: priorities[1],
     isOpen: false,
   });
 
-  const [status, setStatus] = useState<status.StatusType>({
+  const [status, setStatus] = useState<StatusType>({
     label: statuses[0],
     value: statuses[0],
     isOpen: false,
   });
-
-  const [data, setData] = useState<task | undefined>(undefined);
 
   const params = useParams();
 
   useEffect(() => {
     const _Id = params.taskId;
     const id = _Id ? parseInt(_Id) : null;
-    console.log("Task ID:", typeof id);
+
     if (!id) {
       nav("/");
       return;
     }
+
     // get from backend
     const fetchTask = () => {
-      if (id < 0 || id > mockTasks.length) {
+      if (id < 0 || id >= mockTasks.length) {
         nav("/");
         return;
       }
@@ -59,7 +59,29 @@ const Task = () => {
     setTimeout(() => {
       fetchTask();
     }, 1000);
-  }, [params, nav]);
+  }, [params, nav, setData]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setData((prev) => ({ ...prev, [e.target.name]: e.target.value } as task));
+  };
+
+  useEffect(() => {
+    function updateData() {
+      if (data != undefined) {
+        setData(
+          (prev) =>
+            ({
+              ...prev,
+              priority: priority.label,
+              status: status.label,
+            } as task)
+        );
+      }
+    }
+    updateData();
+  }, [data, priority, setData, status]);
 
   return (
     <>
@@ -124,20 +146,34 @@ const Task = () => {
                   <Input
                     placeholder="e.g. Finish React TaskBoard UI"
                     label="Title"
+                    onChange={handleChange}
                     value={data.title}
+                    name="title"
                   />
                   <Input
                     placeholder="Add more details about this task..."
                     label="Description"
                     Type="text-area"
+                    name="description"
                     value={data.description}
+                    onChange={handleChange}
                   />
                   <div className="grid grid-cols-2 gap-3 h-16">
                     <div className="w-full h-full grid grid-cols-1 grid-rows-[20px_auto] gap-1">
                       <label className="text-sm font-medium">Due Date</label>
                       <input
                         type="date"
-                        value={data.dueDate}
+                        value={data.dueAt.date}
+                        onChange={(e) => {
+                          setData(
+                            (prev) =>
+                              ({
+                                ...prev,
+                                dueAt: { ...prev?.dueAt, date: e.target.value },
+                              } as task)
+                          );
+                        }}
+                        name="dueAt.date"
                         className="w-full  text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors"
                       />
                     </div>

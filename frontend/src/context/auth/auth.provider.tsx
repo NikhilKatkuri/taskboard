@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import type { client, EmailPass } from "../../types/auth.context";
+import type { client, EmailPass } from "@schemas/auth.context";
 import { AuthContext } from "./auth.context";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
