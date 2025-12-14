@@ -1,42 +1,94 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Task/Home";
-import Landing from "./pages/Landing";
 import NewTask from "./pages/Task/NewTask";
 import Login from "./pages/auth/Login";
 import Registration from "./pages/auth/Registration";
-import { AuthProvider } from "@context/auth/auth.provider";
 import Task from "./pages/Task/Task";
 import TaskProvider from "@context/task/task.provider";
+import { useAuth } from "@context/auth/useAuth";
 
-function Routers({ isLogin }: { isLogin: boolean }) {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+function Routers() {
   return (
     <>
       <Routes>
-        {isLogin ? (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/new" element={<NewTask />} />
-            <Route path="/tasks/:taskId" element={<Task />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Registration />} />
-          </>
-        )}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <ProtectedRoute>
+              <NewTask />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/tasks/:taskId"
+          element={
+            <ProtectedRoute>
+              <Task />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Registration />
+            </PublicRoute>
+          }
+        />
       </Routes>
     </>
   );
 }
 function App() {
-  const isLogin: boolean = !false;
+  const { isLoading } = useAuth();
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
-    <AuthProvider>
-      <TaskProvider>
-        <Routers isLogin={isLogin} />
-      </TaskProvider>
-    </AuthProvider>
+    <TaskProvider>
+      <Routers />
+    </TaskProvider>
   );
 }
+
 export default App;

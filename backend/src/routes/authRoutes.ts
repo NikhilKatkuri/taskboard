@@ -1,19 +1,13 @@
-import { validationResult } from "express-validator";
+import { validationResult, body } from "express-validator";
 import { User } from "../models/User";
 import express, { Request, Response, NextFunction } from "express";
-import { generateToken } from "../middleware/authMiddleware";
+import {
+  authMiddleware,
+  generateToken,
+  AuthRequest,
+} from "../middleware/authMiddleware";
 
 const authRoutes = express.Router();
-
-authRoutes.post("/check-email", async (req: Request, res: Response) => {
-  const { email } = req.body;
-  const foundEmail = await User.findOne({ email });
-  const emailExists = !!foundEmail;
-  return res.json({
-    exists: emailExists,
-    email: foundEmail ? foundEmail.email : null,
-  });
-});
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -88,7 +82,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getCurrentUser = async (
-  req: Request & { userId?: string },
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -110,8 +104,25 @@ const getCurrentUser = async (
   }
 };
 
-authRoutes.post("/register", register);
-authRoutes.post("/login", login);
-authRoutes.get("/me", getCurrentUser);
+authRoutes.post(
+  "/register",
+  [
+    body("email").isEmail().withMessage("Please provide a valid email"),
+    body("password")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 characters"),
+    body("fullName").notEmpty().withMessage("Full name is required"),
+  ],
+  register
+);
+authRoutes.post(
+  "/login",
+  [
+    body("email").isEmail().withMessage("Please provide a valid email"),
+    body("password").notEmpty().withMessage("Password is required"),
+  ],
+  login
+);
+authRoutes.get("/me", authMiddleware, getCurrentUser);
 
 export default authRoutes;

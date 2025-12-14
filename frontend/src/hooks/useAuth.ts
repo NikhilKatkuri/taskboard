@@ -1,7 +1,12 @@
-import { useState, useCallback, useEffect, type ReactNode } from "react";
-import { AuthContext, type User } from "./auth.context";
+import { useState, useCallback, useEffect } from "react";
 
-interface AuthState {
+export interface User {
+  id: string;
+  fullName: string;
+  email: string;
+}
+
+export interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
@@ -11,12 +16,12 @@ interface AuthState {
 
 const API_BASE = "http://localhost:5000/api/auth";
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const useAuth = () => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     token: null,
     isAuthenticated: false,
-    isLoading: true,
+    isLoading: false,
     error: null,
   });
 
@@ -33,6 +38,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             headers: { Authorization: `Bearer ${savedToken}` },
           });
 
+          console.log("Auth initialization response:", response);
+
           if (response.ok) {
             const data = await response.json();
             setAuthState({
@@ -46,28 +53,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             // Token expired or invalid
             localStorage.removeItem("token");
             localStorage.removeItem("user");
-            setAuthState({
-              user: null,
-              token: null,
-              isAuthenticated: false,
-              isLoading: false,
-              error: null,
-            });
           }
         } catch (error) {
           console.error("Auth initialization error:", error);
           localStorage.removeItem("token");
           localStorage.removeItem("user");
-          setAuthState({
-            user: null,
-            token: null,
-            isAuthenticated: false,
-            isLoading: false,
-            error: null,
-          });
         }
-      } else {
-        setAuthState((prev) => ({ ...prev, isLoading: false }));
       }
     };
 
@@ -124,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const register = useCallback(
     async (fullName: string, email: string, password: string) => {
       setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
-
+      console.log("Registering user:", { fullName, email, password });
       try {
         const response = await fetch(`${API_BASE}/register`, {
           method: "POST",
@@ -191,18 +182,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthState((prev) => ({ ...prev, error: null }));
   }, []);
 
-  const value = {
+  return {
+    // State
     user: authState.user,
     token: authState.token,
     isAuthenticated: authState.isAuthenticated,
     isLoading: authState.isLoading,
     error: authState.error,
+
+    // Methods
     login,
     register,
     logout,
     getToken,
     clearError,
   };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
