@@ -1,9 +1,10 @@
 import useTask from "@context/task/useTask";
 import SkeletonLoader from "./SkeletonLoader";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import TaskBox from "./TaskBox";
 import type { task } from "@schemas/task/Task";
 import useDropDown from "@hooks/useDropDown";
+import useDebounce from "@hooks/useDebounce";
 import Select from "./Select";
 
 type searchBy = "title" | "description";
@@ -11,39 +12,28 @@ type searchBy = "title" | "description";
 const SearchBox = () => {
   const { isSearchBoxOpen, toggleSearchBox, Tasks } = useTask();
 
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const [filteredTasks, setFilteredTasks] = useState<task[]>([]);
-
   const [value, setValue] = useState<string>("");
+
+  const debouncedValue = useDebounce(value, 300);
 
   const searchOption: searchBy[] = ["title", "description"];
 
   const [searchBy, searchByAction] = useDropDown<searchBy>("title");
 
-  useEffect(() => {
-    const state = () => {
-      if (isSearchBoxOpen) {
-        setLoading(true);
-        setTimeout(() => setLoading(false), 500);
-        setFilteredTasks([...Tasks].reverse());
-      } else {
-        setFilteredTasks([]);
-      }
-    };
-    state();
-  }, [isSearchBoxOpen, Tasks]);
+  const loading = value !== debouncedValue;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const text: string = e.target.value.trimStart();
-    setValue(text);
-    if (!text) {
-      setFilteredTasks([...Tasks].reverse());
-      return;
+  const filteredTasks = useMemo(() => {
+    if (!isSearchBoxOpen) {
+      return [];
     }
+
+    if (!debouncedValue) {
+      return [...Tasks].reverse();
+    }
+
+    const lowerText = debouncedValue.toLowerCase();
     const data: task[] = Tasks.filter((d) => {
       const searchText = d.title.toLowerCase();
-      const lowerText = text.toLowerCase();
       if (searchBy.value === "description") {
         const findDesc = d.description?.toLowerCase() || "";
         return findDesc.startsWith(lowerText) || findDesc.includes(lowerText);
@@ -51,7 +41,12 @@ const SearchBox = () => {
       return searchText.startsWith(lowerText) || searchText.includes(lowerText);
     }).reverse();
 
-    setFilteredTasks(data);
+    return data;
+  }, [isSearchBoxOpen, debouncedValue, Tasks, searchBy.value]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text: string = e.target.value.trimStart();
+    setValue(text);
   };
 
   if (!isSearchBoxOpen) return null;
