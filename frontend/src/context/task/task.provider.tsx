@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TaskContext from "./task.context";
 import type { Panigation } from "@schemas/task/context";
 import type {
@@ -8,14 +8,15 @@ import type {
   SortOption,
   task,
 } from "@schemas/task/Task";
-import { mockTasks } from "@assets/mockTask";
 import type { Priority } from "@schemas/task/priority";
 import type { Status } from "@schemas/task/status";
+import { useAuth } from "@context/auth/useAuth";
+import { API_ENDPOINTS, STORAGE_KEYS, PAGINATION } from "@config/constants";
 
 const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const priorities: Priority[] = ["Low", "Medium", "High"];
   const statuses: Status[] = ["todo", "in-progress", "review", "done"];
-
+  const { token } = useAuth();
   // filter and sort state
   const list: List = {
     sort: ["none", "dueDate", "priority"],
@@ -24,7 +25,7 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const [filterOption, setFilterOption] = useState<FilterOption>(
-    list.filter[2]
+    list.filter[0]
   );
 
   const [sortOption, setSortOption] = useState<SortOption>(list.sort[0]);
@@ -56,8 +57,8 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   // data
-  const maxPerPage: number = 10;
-  const MaxPagesLength = 5;
+  const maxPerPage: number = PAGINATION.MAX_PER_PAGE;
+  const MaxPagesLength = PAGINATION.MAX_PAGES_LENGTH;
   const viewData = (data: task[]): task[] => {
     return data.slice(
       panigation.currPage * maxPerPage,
@@ -70,25 +71,42 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
   const [caches, setCaches] = useState<task[]>([]);
   const [Task, setTask] = useState<task | undefined>(undefined);
 
-  useEffect(() => {
-    function update() {
-      setTimeout(() => {
-        setTasks([...mockTasks].reverse());
-        setPanigation({
-          currPage: 0,
-          totalPage: Math.ceil(mockTasks.length / maxPerPage),
-        });
-      }, 100);
+  const getTasks = useCallback(async () => {
+    if (!token) return;
+    try {
+      const response = await fetch(API_ENDPOINTS.TASKS.BASE, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data.tasks as task[];
+      }
+    } catch (error) {
+      console.error("Failed to fetch tasks", error);
     }
-    update();
-  }, [Task]);
+  }, [token]);
 
   useEffect(() => {
-    function cacheData() {
-      setCaches([...mockTasks].reverse());
+    async function fetchAndSetTasks() {
+      const tasksFromServer = await getTasks();
+      const tasks = tasksFromServer || [];
+      setCaches([...tasks].map((taskItem, index) => ({ ...taskItem, index })));
+      localStorage.setItem(
+        STORAGE_KEYS.TASKS_CACHE,
+        JSON.stringify(
+          [...tasks].map((taskItem, index) => ({ ...taskItem, index }))
+        )
+      );
+      setTasks(tasks);
+      setPanigation({
+        currPage: 0,
+        totalPage: Math.ceil(tasks.length / maxPerPage),
+      });
     }
-    cacheData();
-  }, []);
+    fetchAndSetTasks();
+  }, [getTasks, maxPerPage]);
 
   const getPriotityValue = (priority: Priority): number => {
     switch (priority) {
@@ -135,8 +153,27 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         totalPage: Math.ceil(processedTasks.length / maxPerPage),
       });
     }
-    processData();
+    if (caches.length > 0) {
+      processData();
+    }
   }, [caches, filterOption, sortOption, sortOrder, maxPerPage]);
+
+  const refreshTasks = async () => {
+    const tasksFromServer = await getTasks();
+    const tasks = tasksFromServer || [];
+    setCaches([...tasks].map((taskItem, index) => ({ ...taskItem, index })));
+    localStorage.setItem(
+      STORAGE_KEYS.TASKS_CACHE,
+      JSON.stringify(
+        [...tasks].map((taskItem, index) => ({ ...taskItem, index }))
+      )
+    );
+    setTasks(tasks);
+    setPanigation({
+      currPage: 0,
+      totalPage: Math.ceil(tasks.length / maxPerPage),
+    });
+  };
 
   // context values
   const values = {
@@ -162,6 +199,7 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
     sortOrder,
     setSortOrder,
     caches,
+    refreshTasks,
   };
 
   return <TaskContext.Provider value={values}>{children}</TaskContext.Provider>;

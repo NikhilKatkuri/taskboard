@@ -50,9 +50,6 @@ const SearchBox = () => {
       }
       return searchText.startsWith(lowerText) || searchText.includes(lowerText);
     }).reverse();
-    if (!data.length) {
-      console.log("empty");
-    }
 
     setFilteredTasks(data);
   };
@@ -134,7 +131,7 @@ const SearchBox = () => {
             ) : filteredTasks.length > 0 ? (
               <>
                 {filteredTasks.map((item) => (
-                  <TaskBox key={item.id} task={item} />
+                  <TaskBox key={item._id} task={item} />
                 ))}
               </>
             ) : value ? (

@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, type ReactNode } from "react";
 import { AuthContext, type User } from "./auth.context";
+import { API_ENDPOINTS, STORAGE_KEYS } from "@config/constants";
 
 interface AuthState {
   user: User | null;
@@ -8,8 +9,6 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
 }
-
-const API_BASE = "http://localhost:5000/api/auth";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authState, setAuthState] = useState<AuthState>({
@@ -23,13 +22,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Initialize auth state from localStorage on mount
   useEffect(() => {
     const initializeAuth = async () => {
-      const savedToken = localStorage.getItem("token");
-      const savedUser = localStorage.getItem("user");
+      const savedToken = localStorage.getItem(STORAGE_KEYS.TOKEN);
+      const savedUser = localStorage.getItem(STORAGE_KEYS.USER);
 
       if (savedToken && savedUser) {
         try {
           // Verify token is still valid by fetching current user
-          const response = await fetch(`${API_BASE}/me`, {
+          const response = await fetch(API_ENDPOINTS.AUTH.ME, {
             headers: { Authorization: `Bearer ${savedToken}` },
           });
 
@@ -44,8 +43,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             });
           } else {
             // Token expired or invalid
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
+            localStorage.removeItem(STORAGE_KEYS.TOKEN);
+            localStorage.removeItem(STORAGE_KEYS.USER);
             setAuthState({
               user: null,
               token: null,
@@ -56,8 +55,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         } catch (error) {
           console.error("Auth initialization error:", error);
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
+          localStorage.removeItem(STORAGE_KEYS.TOKEN);
+          localStorage.removeItem(STORAGE_KEYS.USER);
           setAuthState({
             user: null,
             token: null,
@@ -79,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const response = await fetch(`${API_BASE}/login`, {
+      const response = await fetch(API_ENDPOINTS.AUTH.LOGIN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -97,8 +96,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Store token and user in localStorage
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
 
       setAuthState({
         user: data.user,
@@ -126,7 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       try {
-        const response = await fetch(`${API_BASE}/register`, {
+        const response = await fetch(API_ENDPOINTS.AUTH.REGISTER, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fullName, email, password }),
@@ -145,8 +144,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
 
         // Auto-login after successful registration
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
 
         setAuthState({
           user: data.user,
@@ -172,8 +171,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Logout function
   const logout = useCallback(() => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    localStorage.removeItem(STORAGE_KEYS.TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.USER);
     setAuthState({
       user: null,
       token: null,

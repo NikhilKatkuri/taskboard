@@ -15,12 +15,12 @@ export interface AuthContextType {
   login: (
     email: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string; data?: any }>;
+  ) => Promise<{ success: boolean; error?: string; data?: unknown }>;
   register: (
     fullName: string,
     email: string,
     password: string
-  ) => Promise<{ success: boolean; error?: string; data?: any }>;
+  ) => Promise<{ success: boolean; error?: string; data?: unknown }>;
   logout: () => void;
   getToken: () => string | null;
   clearError: () => void;

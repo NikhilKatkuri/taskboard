@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import SkeletonLoader from "./SkeletonLoader";
 import useTask from "@context/task/useTask";
 import type { ShowProps } from "@schemas/index";
+import { useAuth } from "@context/auth/useAuth";
+import useShow from "@hooks/useShow";
+import { useEffect, useRef } from "react";
 
 interface NavbarProps {
   filter: ShowProps;
@@ -11,6 +13,40 @@ interface NavbarProps {
 const Navbar = ({ filter, Sort }: NavbarProps) => {
   const nav = useNavigate();
   const { toggleSearchBox } = useTask();
+  const { user, logout } = useAuth();
+  const profileMenu = useShow();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        profileMenu.setShow(false);
+      }
+    };
+
+    if (profileMenu.show) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [profileMenu]);
+
+  const handleLogout = () => {
+    logout();
+    profileMenu.setShow(false);
+    nav("/login");
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <header className="w-full sticky top-0 z-10 h-16 bg-white flex items-center justify-between px-4">
@@ -112,9 +148,47 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
           </svg>
           <span className="max-[440px]:hidden">New</span>
         </button>
-        <button className="aspect-square h-10 overflow-hidden rounded-full hover:bg-gray-50 border border-gray-50 flex items-center justify-center cursor-pointer">
-          <SkeletonLoader className="h-10 w-10 rounded-full" />
-        </button>
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => profileMenu.setShow((prev) => !prev)}
+            className="aspect-square h-10 overflow-hidden rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer font-semibold text-sm transition-colors"
+          >
+            {user ? getInitials(user.fullName) : "U"}
+          </button>
+
+          {profileMenu.show && (
+            <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+              <div className="px-4 py-3 border-b border-gray-200">
+                <p className="text-sm font-semibold text-gray-900">
+                  {user?.fullName || "User"}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {user?.email || "user@example.com"}
+                </p>
+              </div>
+              <button
+                onClick={handleLogout}
+                className="w-full px-4 py-2 cursor-pointer text-left text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                  />
+                </svg>
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

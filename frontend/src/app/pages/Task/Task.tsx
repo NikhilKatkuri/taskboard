@@ -3,21 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import Input from "@components/reusable/Input";
 import Select from "@components/reusable/Select";
 import type { task } from "@schemas/task/Task";
-import { mockTasks } from "@assets/mockTask";
 import SkeletonLoader from "@components/reusable/SkeletonLoader";
 import useTask from "@context/task/useTask";
 import type { Priority } from "@schemas/task/priority";
 import type { Status } from "@schemas/task/status";
 import useDropDown from "@hooks/useDropDown";
-import { toInputDate } from "@utils/.";
+import { toInputDate } from "@utils/index";
+import { usehandleTask } from "@hooks/usehandleTask";
+import { useAuth } from "@context/auth/useAuth";
 
-interface NavProps {
-  prev: number;
-  next: number;
-  curr: number;
-}
-
-interface navStateChangeProps {
+interface NavStateChangeProps {
   canGoBack: () => boolean;
   canGoNext: () => boolean;
   goPrev: () => void;
@@ -26,55 +21,49 @@ interface navStateChangeProps {
 
 const Task = () => {
   const nav = useNavigate();
-  const { Task: data, setTask: setData, priorities, statuses } = useTask();
+  const {
+    Task: data,
+    setTask: setData,
+    priorities,
+    statuses,
+    caches,
+  } = useTask();
 
   const [priority, priorityActions] = useDropDown<Priority>(priorities[1]);
   const [status, statusActions] = useDropDown<Status>(statuses[0]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const params = useParams();
-
-  const [navState, setNavState] = useState<NavProps>({
-    prev: 0,
-    next: 0,
-    curr: 0,
-  });
+  const { token } = useAuth();
+  const taskHandler = token ? usehandleTask(token) : null;
 
   useEffect(() => {
-    // get from backend
     const fetchTask = () => {
-      setLoading(true);
-      const _Id = params.taskId;
-      const id = _Id ? parseInt(_Id) : null;
+      const taskId = params.taskId;
 
-      if (!id) {
+      if (!token || caches.length === 0) {
+        setLoading(true);
+        return;
+      }
+
+      const index = caches.findIndex((taskItem) => taskItem._id === taskId);
+
+      if (index === -1) {
+        setLoading(false);
         nav("/");
         return;
       }
 
-      if (id < 0 || id > mockTasks.length) {
-        nav("/");
-        return;
-      }
-
-      setNavState({
-        prev: id - 1 < 1 ? 1 : id - 1,
-        next: id + 1 > mockTasks.length ? mockTasks.length : id + 1,
-        curr: id,
-      });
-
-      setData(mockTasks[id - 1]);
-
-      priorityActions.setLabel(mockTasks[id - 1].priority);
-      priorityActions.setValue(mockTasks[id - 1].priority);
-      priorityActions.setIsOpen(false);
-
-      statusActions.setLabel(mockTasks[id - 1].status);
-      statusActions.setValue(mockTasks[id - 1].status);
-      statusActions.setIsOpen(false);
+      setCurrentIndex(index);
+      setData(caches[index]);
+      priorityActions.setLabel(caches[index].priority as Priority);
+      priorityActions.setValue(caches[index].priority as Priority);
+      statusActions.setLabel(caches[index].status as Status);
+      statusActions.setValue(caches[index].status as Status);
       setLoading(false);
     };
     fetchTask();
-  }, [params, nav, setData, priorityActions, statusActions]);
+  }, [params, nav, setData, priorityActions, statusActions, caches, token]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -97,34 +86,44 @@ const Task = () => {
     updateData();
   }, [priority.label, status.label, setData]);
 
-  function navStateChange(): navStateChangeProps {
+  const navStateChange = (): NavStateChangeProps => {
     return {
-      canGoBack: () => {
-        if (navState.curr > 1) {
-          return true;
-        }
-        return false;
-      },
-      canGoNext: () => {
-        if (navState.curr < mockTasks.length) {
-          return true;
-        }
-        return false;
-      },
+      canGoBack: () => currentIndex > 0,
+      canGoNext: () => currentIndex < caches.length - 1,
       goPrev: () => {
-        if (navState.curr > 1) {
-          nav(`/tasks/${navState.prev}`);
+        if (currentIndex > 0) {
+          const prevIndex = currentIndex - 1;
+          nav(`/tasks/${caches[prevIndex]._id}`);
         }
       },
       goNext: () => {
-        if (navState.curr < mockTasks.length) {
-          nav(`/tasks/${navState.next}`);
+        if (currentIndex < caches.length - 1) {
+          const nextIndex = currentIndex + 1;
+          nav(`/tasks/${caches[nextIndex]._id}`);
         }
       },
     };
-  }
+  };
 
   const navActions = navStateChange();
+
+  const handleSubmit = async () => {
+    if (!data || !params.taskId || !taskHandler) return;
+
+    try {
+      const res = await taskHandler.updateTask(data, params.taskId);
+      if (res?.ok) {
+        alert("Task updated successfully");
+        nav("/");
+      } else {
+        alert("Failed to update task");
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+      alert("An error occurred while updating the task");
+    }
+  };
+
   return (
     <>
       <div className="h-screen w-screen sm:p-2 lg:p-3 xl:p-4">
@@ -237,7 +236,20 @@ const Task = () => {
                   <Input
                     placeholder="e.g. react, assignment"
                     label="Tags"
+                    name="tags"
                     value={data.tags.join(", ")}
+                    onChange={(e) => {
+                      setData(
+                        (prev) =>
+                          ({
+                            ...prev,
+                            tags: e.target.value
+                              .split(",")
+                              .map((tag) => tag.trim())
+                              .filter((tag) => tag.length > 0),
+                          } as task)
+                      );
+                    }}
                     children={
                       <p className="text-[11px] text-gray-500">
                         Separate tags with commas.
@@ -248,7 +260,10 @@ const Task = () => {
                     <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-100  hover:bg-gray-100 bg-transparent border border-gray-400 flex items-center justify-center cursor-pointer">
                       Cancel
                     </button>
-                    <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-900 active:text-white  hover:bg-gray-900 hover:text-white border border-gray-400 hover:border-gray-900 bg-gray-100 flex items-center justify-center cursor-pointer">
+                    <button
+                      onClick={handleSubmit}
+                      className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-900 active:text-white  hover:bg-gray-900 hover:text-white border border-gray-400 hover:border-gray-900 bg-gray-100 flex items-center justify-center cursor-pointer"
+                    >
                       Submit
                     </button>
                   </div>

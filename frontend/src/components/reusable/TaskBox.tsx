@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { task } from "@schemas/task/Task";
-import { formatDate } from "@utils/.";
+import { formatDate } from "@utils/index";
 
 interface TaskBoxProps {
   task: task;
@@ -24,7 +24,7 @@ const TaskBox = ({ task }: TaskBoxProps) => {
   const date = formatDate(task.dueAt);
   return (
     <div
-      onClick={() => navigate(`/tasks/${task.id}`)}
+      onClick={() => navigate(`/tasks/${task._id}`)}
       className="w-full h-auto p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all cursor-pointer group"
     >
       <div className="flex items-start justify-between gap-3 mb-3">

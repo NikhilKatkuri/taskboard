@@ -1,7 +1,8 @@
-import type { priority, status } from ".";
+import type { Priority } from "./priority";
+import type { Status } from "./status";
 
 export type SortOption = "none" | "dueDate" | "priority";
-export type FilterOption = "none" | priority.Priority;
+export type FilterOption = "none" | Priority;
 export type order = "asc" | "desc";
 
 export interface List {
@@ -10,15 +11,19 @@ export interface List {
   order: order[];
 }
 
-export interface task {
-  id: number;
+export interface taskData {
   title: string;
   description: string;
   dueAt: string;
-  priority: priority.Priority;
-  status: status.Status;
+  priority: Priority;
+  status: Status;
   tags: string[];
+}
+
+export interface task extends taskData {
+  _id: string;
   assignee: string;
   createdAt: string;
   updatedAt: string;
+  index?: number;
 }

@@ -29,4 +29,5 @@ export interface TaskContextType {
   setSortOption: React.Dispatch<React.SetStateAction<SortOption>>;
   sortOrder: order;
   setSortOrder: React.Dispatch<React.SetStateAction<order>>;
+  refreshTasks: () => Promise<void>;
 }

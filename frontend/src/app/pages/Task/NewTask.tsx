@@ -5,15 +5,74 @@ import useTask from "@context/task/useTask";
 import type { Priority } from "@schemas/task/priority";
 import type { Status } from "@schemas/task/status";
 import useDropDown from "@hooks/useDropDown";
+import { useState } from "react";
+import { type taskData } from "@schemas/task/Task";
+import { usehandleTask } from "@hooks/usehandleTask";
+import { useAuth } from "@context/auth/useAuth";
+import { toInputDate } from "@utils/index";
 
 const NewTask = () => {
   const nav = useNavigate();
-
+  const { token } = useAuth();
   const { priorities, statuses } = useTask();
+  const taskHandler = token ? usehandleTask(token) : null;
 
   const [priority, priorityActions] = useDropDown<Priority>(priorities[1]);
-
   const [status, statusActions] = useDropDown<Status>(statuses[0]);
+
+  const [activeBtn, setActiveBtn] = useState<"none" | "clear" | "submit">(
+    "none"
+  );
+
+  const getDefaultDueDate = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+    return date.toISOString();
+  };
+
+  const [taskData, setTaskData] = useState<taskData>({
+    title: "",
+    description: "",
+    dueAt: getDefaultDueDate(),
+    priority: priority.value,
+    status: status.value,
+    tags: [],
+  });
+
+  const handleSubmit = async () => {
+    if (activeBtn === "clear" || !taskHandler) return;
+    setActiveBtn("submit");
+
+    try {
+      const updatedTaskData = {
+        ...taskData,
+        priority: priority.value,
+        status: status.value,
+      };
+
+      await taskHandler.createTask(updatedTaskData);
+      nav("/");
+    } catch (error) {
+      console.error("Error creating task:", error);
+      alert("Failed to create task. Please try again.");
+    } finally {
+      setActiveBtn("none");
+    }
+  };
+
+  const handleClear = () => {
+    if (activeBtn === "submit") return;
+    setActiveBtn("clear");
+    setTaskData({
+      title: "",
+      description: "",
+      dueAt: getDefaultDueDate(),
+      priority: priority.value,
+      status: status.value,
+      tags: [],
+    });
+    setActiveBtn("none");
+  };
 
   return (
     <>
@@ -77,17 +136,41 @@ const NewTask = () => {
                 <Input
                   placeholder="e.g. Finish React TaskBoard UI"
                   label="Title"
+                  required
+                  value={taskData.title}
+                  onChange={(e) => {
+                    setTaskData((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
+                  }}
                 />
                 <Input
                   placeholder="Add more details about this task..."
                   label="Description"
                   Type="text-area"
+                  required
+                  value={taskData.description}
+                  onChange={(e) => {
+                    setTaskData((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }));
+                  }}
                 />
                 <div className="grid grid-cols-2 gap-3 h-16">
                   <div className="w-full h-full grid grid-cols-1 grid-rows-[20px_auto] gap-1">
                     <label className="text-sm font-medium">Due Date</label>
                     <input
+                      required
+                      value={toInputDate(taskData.dueAt)}
                       type="date"
+                      onChange={(e) => {
+                        setTaskData((prev) => ({
+                          ...prev,
+                          dueAt: new Date(e.target.value).toISOString(),
+                        }));
+                      }}
                       className="w-full  text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors"
                     />
                   </div>
@@ -109,6 +192,14 @@ const NewTask = () => {
                 <Input
                   placeholder="e.g. react, assignment"
                   label="Tags"
+                  required
+                  value={taskData.tags.join(", ")}
+                  onChange={(e) => {
+                    setTaskData((prev) => ({
+                      ...prev,
+                      tags: e.target.value.split(",").map((tag) => tag.trim()),
+                    }));
+                  }}
                   children={
                     <p className="text-[11px] text-gray-500">
                       Separate tags with commas.
@@ -116,10 +207,18 @@ const NewTask = () => {
                   }
                 />
                 <div className="flex items-center my-2 justify-end text-sm gap-4">
-                  <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-100  hover:bg-gray-100 bg-transparent border border-gray-400 flex items-center justify-center cursor-pointer">
-                    Cancel
+                  <button
+                    type="button"
+                    onClick={handleClear}
+                    className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-100  hover:bg-gray-100 bg-transparent border border-gray-400 flex items-center justify-center cursor-pointer"
+                  >
+                    clear All
                   </button>
-                  <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-900 active:text-white  hover:bg-gray-900 hover:text-white border border-gray-400 hover:border-gray-900 bg-gray-100 flex items-center justify-center cursor-pointer">
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-900 active:text-white  hover:bg-gray-900 hover:text-white border border-gray-400 hover:border-gray-900 bg-gray-100 flex items-center justify-center cursor-pointer"
+                  >
                     Submit
                   </button>
                 </div>

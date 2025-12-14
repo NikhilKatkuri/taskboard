@@ -17,7 +17,12 @@ const Home = () => {
     setFilterOption,
     setSortOption,
     setSortOrder,
+    refreshTasks,
   } = useTask();
+
+  const handleTaskDelete = async () => {
+    await refreshTasks();
+  };
 
   const sortView = useShow();
   const filterView = useShow();
@@ -77,8 +82,14 @@ const Home = () => {
             </div>
           ) : (
             <div className="w-full h-full grid grid-cols-1 max-w-2xl  mx-auto gap-2 py-3">
-              {viewData(data).map((taskItem, index) => {
-                return <TaskCard key={index} task={taskItem} />;
+              {viewData(data).map((taskItem) => {
+                return (
+                  <TaskCard
+                    key={taskItem._id}
+                    task={taskItem}
+                    onDelete={handleTaskDelete}
+                  />
+                );
               })}
               <div className="h-16 "></div>
             </div>
@@ -90,7 +101,7 @@ const Home = () => {
             onClick={() => {
               sortView.setShow((prev) => !prev);
             }}
-            className=" h-12 w-12  z-10 rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer shadow-lg shadow-blue-300/80"
+            className=" h-11 aspect-square  z-10 rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer shadow-lg shadow-blue-300/80"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +122,7 @@ const Home = () => {
             onClick={() => {
               filterView.setShow((prev) => !prev);
             }}
-            className=" h-12 w-12  z-10 rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer shadow-lg shadow-blue-300/80"
+            className=" h-11 aspect-square  z-10 rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer shadow-lg shadow-blue-300/80"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

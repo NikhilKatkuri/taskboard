@@ -41,7 +41,6 @@ const taskSchema = new Schema<ITask>(
   { timestamps: true }
 );
 
-// Index for user's tasks
 taskSchema.index({ owner: 1, createdAt: -1 });
 
 export const Task = mongoose.model<ITask>("Task", taskSchema);

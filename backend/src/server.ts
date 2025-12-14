@@ -6,6 +6,7 @@ import connection from "./controllers/connection";
 import authRoutes from "./routes/authRoutes";
 import taskRoutes from "./routes/taskRoutes";
 import { authMiddleware } from "./middleware/authMiddleware";
+import os from "os";
 dotenv.config();
 
 const app: Express = express();
@@ -13,7 +14,7 @@ const app: Express = express();
 // Middleware
 app.use(
   cors({
-    origin: process.env["CLIENT_URL"] || "http://localhost:3000",
+    origin: process.env["CLIENT_URL"] || "http://localhost:5000",
     credentials: true,
   })
 );
@@ -37,10 +38,26 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Connect to MongoDB
-connection();
 
 // Start server
 const PORT = process.env["PORT"] || 5000;
-app.listen(PORT, () => {
+const HOST = "0.0.0.0";
+
+app.listen({ port: Number(PORT), host: HOST }, async () => {
+  await connection();
+  function getNetworkInterfaces() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+      for (const net of interfaces[name]!) {
+        if (net.family === "IPv4" && !net.internal) {
+          console.log(`\nAccessible at http://${net.address}:${PORT}`);
+        }
+      }
+    }
+    return "localhost";
+  }
+  getNetworkInterfaces();
+
+  console.log(`Server running at http://localhost:${PORT}`);
   console.log(`Server running on port ${PORT}`);
 });

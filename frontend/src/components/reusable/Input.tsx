@@ -1,18 +1,29 @@
 import React from "react";
 
-interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
-  placeholder: string;
+interface BaseInputProps {
   label: string;
-  Type?: "text" | "text-area";
-  children?: React.ReactNode | null;
+  children?: React.ReactNode;
 }
+
+interface TextInputProps
+  extends BaseInputProps,
+    Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
+  Type?: "text";
+}
+
+interface TextAreaProps
+  extends BaseInputProps,
+    React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  Type: "text-area";
+}
+
+type InputProps = TextInputProps | TextAreaProps;
 
 const Input = ({
   placeholder,
   label,
   Type = "text",
-  children = null,
+  children,
   ...props
 }: InputProps) => {
   return (
@@ -24,7 +35,7 @@ const Input = ({
           className="w-full text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors"
           placeholder={placeholder}
           required
-          {...props}
+          {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
         />
       )}
       {Type === "text-area" && (
@@ -33,7 +44,7 @@ const Input = ({
           className="w-full text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors resize-none"
           placeholder={placeholder}
           required
-          {...props}
+          {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
         />
       )}
       {children}
