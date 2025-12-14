@@ -29,6 +29,7 @@ export default defineConfig({
       "@context": path.resolve(__dirname, "./src/context"),
       "@schemas": path.resolve(__dirname, "./src/schemas"),
       "@hooks": path.resolve(__dirname, "./src/hooks"),
+      "@utils": path.resolve(__dirname, "./src/utils"),
     },
   },
 });

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { task } from "@schemas/task/Task";
+import { formatDate } from "@utils/.";
 
 interface TaskBoxProps {
   task: task;
@@ -20,16 +21,7 @@ const getPriorityColor = (priority: string) => {
 
 const TaskBox = ({ task }: TaskBoxProps) => {
   const navigate = useNavigate();
-
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
+  const date = formatDate(task.dueAt);
   return (
     <div
       onClick={() => navigate(`/tasks/${task.id}`)}
@@ -57,7 +49,7 @@ const TaskBox = ({ task }: TaskBoxProps) => {
           {task.priority}
         </span>
         <span className="text-xs text-gray-500">
-          Due {task.dueAt.time} {formatDate(task.dueAt.date)}
+          Due {date.date()} at {date.time()}
         </span>
       </div>
     </div>

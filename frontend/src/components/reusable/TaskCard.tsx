@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { task } from "@schemas/task/Task";
+import { formatDate } from "@utils/.";
 
 interface TaskCardProps {
   task: task;
@@ -36,14 +37,7 @@ const getStatusColor = (status: string) => {
 const TaskCard = ({ task }: TaskCardProps) => {
   const navigate = useNavigate();
 
-  const formatDate = (timestamp: string) => {
-    const date = new Date(timestamp);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+  const date = formatDate(task.dueAt);
 
   return (
     <div
@@ -97,7 +91,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           {task.status.replace("-", " ")}
         </span>
         <span className="text-xs text-gray-500">
-          Due {task.dueAt.time} {formatDate(task.dueAt.date)}
+          Due {date.date()} at {date.time()}
         </span>
       </div>
     </div>

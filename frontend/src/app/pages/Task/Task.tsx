@@ -9,6 +9,7 @@ import useTask from "@context/task/useTask";
 import type { Priority } from "@schemas/task/priority";
 import type { Status } from "@schemas/task/status";
 import useDropDown from "@hooks/useDropDown";
+import { toInputDate } from "@utils/.";
 
 interface NavProps {
   prev: number;
@@ -204,13 +205,13 @@ const Task = () => {
                       <label className="text-sm font-medium">Due Date</label>
                       <input
                         type="date"
-                        value={data.dueAt.date}
+                        value={toInputDate(data.dueAt)}
                         onChange={(e) => {
                           setData(
                             (prev) =>
                               ({
                                 ...prev,
-                                dueAt: { ...prev?.dueAt, date: e.target.value },
+                                dueAt: new Date(e.target.value).toISOString(),
                               } as task)
                           );
                         }}

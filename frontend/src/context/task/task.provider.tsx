@@ -117,8 +117,8 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
       if (sortOption !== "none") {
         processedTasks.sort((a, b) => {
           if (sortOption === "dueDate") {
-            const aD = new Date(a.dueAt.date).getTime();
-            const bD = new Date(b.dueAt.date).getTime();
+            const aD = new Date(a.dueAt).getTime();
+            const bD = new Date(b.dueAt).getTime();
             return sortOrder === "asc" ? aD - bD : bD - aD;
           } else if (sortOption === "priority") {
             const aP = getPriotityValue(a.priority);
@@ -129,7 +129,6 @@ const TaskProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
 
-      // Step 3: Update state
       setTasks(processedTasks);
       setPanigation({
         currPage: 0,
