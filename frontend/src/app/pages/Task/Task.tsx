@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "@components/reusable/Input";
 import Select from "@components/reusable/Select";
@@ -10,30 +10,57 @@ import type { Priority } from "@schemas/task/priority";
 import type { Status } from "@schemas/task/status";
 import useDropDown from "@hooks/useDropDown";
 
+interface NavProps {
+  prev: number;
+  next: number;
+  curr: number;
+}
+
+interface navStateChangeProps {
+  canGoBack: () => boolean;
+  canGoNext: () => boolean;
+  goPrev: () => void;
+  goNext: () => void;
+}
+
 const Task = () => {
   const nav = useNavigate();
   const { Task: data, setTask: setData, priorities, statuses } = useTask();
 
   const [priority, priorityActions] = useDropDown<Priority>(priorities[1]);
   const [status, statusActions] = useDropDown<Status>(statuses[0]);
-
+  const [loading, setLoading] = useState<boolean>(true);
   const params = useParams();
 
+  const [navState, setNavState] = useState<NavProps>({
+    prev: 0,
+    next: 0,
+    curr: 0,
+  });
+
   useEffect(() => {
-    const _Id = params.taskId;
-    const id = _Id ? parseInt(_Id) : null;
-
-    if (!id) {
-      nav("/");
-      return;
-    }
-
     // get from backend
     const fetchTask = () => {
-      if (id < 0 || id >= mockTasks.length) {
+      setLoading(true);
+      const _Id = params.taskId;
+      const id = _Id ? parseInt(_Id) : null;
+
+      if (!id) {
         nav("/");
         return;
       }
+
+      if (id < 0 || id > mockTasks.length) {
+        nav("/");
+        return;
+      }
+
+      setNavState({
+        prev: id - 1 < 1 ? 1 : id - 1,
+        next: id + 1 > mockTasks.length ? mockTasks.length : id + 1,
+        curr: id,
+      });
+
       setData(mockTasks[id - 1]);
 
       priorityActions.setLabel(mockTasks[id - 1].priority);
@@ -43,10 +70,9 @@ const Task = () => {
       statusActions.setLabel(mockTasks[id - 1].status);
       statusActions.setValue(mockTasks[id - 1].status);
       statusActions.setIsOpen(false);
+      setLoading(false);
     };
-    setTimeout(() => {
-      fetchTask();
-    }, 1000);
+    fetchTask();
   }, [params, nav, setData, priorityActions, statusActions]);
 
   const handleChange = (
@@ -57,20 +83,47 @@ const Task = () => {
 
   useEffect(() => {
     function updateData() {
-      if (data != undefined) {
-        setData(
-          (prev) =>
-            ({
+      setData((prev) =>
+        prev
+          ? ({
               ...prev,
               priority: priority.label,
               status: status.label,
             } as task)
-        );
-      }
+          : prev
+      );
     }
     updateData();
-  }, [data, priority, setData, status]);
+  }, [priority.label, status.label, setData]);
 
+  function navStateChange(): navStateChangeProps {
+    return {
+      canGoBack: () => {
+        if (navState.curr > 1) {
+          return true;
+        }
+        return false;
+      },
+      canGoNext: () => {
+        if (navState.curr < mockTasks.length) {
+          return true;
+        }
+        return false;
+      },
+      goPrev: () => {
+        if (navState.curr > 1) {
+          nav(`/tasks/${navState.prev}`);
+        }
+      },
+      goNext: () => {
+        if (navState.curr < mockTasks.length) {
+          nav(`/tasks/${navState.next}`);
+        }
+      },
+    };
+  }
+
+  const navActions = navStateChange();
   return (
     <>
       <div className="h-screen w-screen sm:p-2 lg:p-3 xl:p-4">
@@ -104,10 +157,10 @@ const Task = () => {
             </div>
           </aside>
           <main className="w-full h-full p-1 sm:p-2 lg:p-3 xl:p-4  grid grid-cols-1 grid-rows-[40px_auto] gap-4">
-            <nav className="grid grid-cols-[40px_auto_40px] items-center gap-2">
+            <nav className="grid grid-cols-[40px_auto] items-center gap-2">
               <button
                 onClick={() => {
-                  nav(-1);
+                  nav("/");
                 }}
                 className="aspect-square h-8 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
               >
@@ -128,9 +181,9 @@ const Task = () => {
               </button>
               <h1 className="text-xl font-semibold">New Task</h1>
             </nav>
-            {data ? (
-              <div className="w-full h-full">
-                <div className="w-full h-full py-8 flex flex-col gap-4 overflow-y-auto px-2 max-w-lg mx-auto">
+            {data && !loading ? (
+              <div className="w-full h-full flex flex-col">
+                <div className="w-full h-auto  max-lg:pb-6 max-lg:pt-8 py-4 flex flex-col gap-4 overflow-y-auto px-2 max-w-lg mx-auto">
                   <Input
                     placeholder="e.g. Finish React TaskBoard UI"
                     label="Title"
@@ -199,6 +252,67 @@ const Task = () => {
                     </button>
                   </div>
                 </div>
+                <nav className="grid grid-cols-[100px_auto_100px] px-2">
+                  <button
+                    onClick={() => {
+                      navActions.goPrev();
+                    }}
+                    disabled={!navActions.canGoBack()}
+                    className={`h-10 scale-90 px-4 w-full gap-2 overflow-hidden rounded-xl hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer ${
+                      navActions.canGoBack()
+                        ? ""
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
+                  >
+                    <span className="text-sm text-gray-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                        />
+                      </svg>
+                    </span>
+                    <span>Prev</span>
+                  </button>
+                  <div className="" />
+                  <button
+                    onClick={() => {
+                      navActions.goNext();
+                    }}
+                    disabled={!navActions.canGoNext()}
+                    className={`h-10 scale-90 px-4 w-full gap-2 overflow-hidden rounded-xl hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer  ${
+                      navActions.canGoNext()
+                        ? ""
+                        : "opacity-50 cursor-not-allowed"
+                    }`}
+                  >
+                    <span>Next</span>
+                    <span className="text-sm text-gray-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </nav>
               </div>
             ) : (
               <div className="w-full h-full">

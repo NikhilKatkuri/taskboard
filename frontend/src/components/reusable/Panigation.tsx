@@ -3,7 +3,7 @@ import useTask from "@context/task/useTask";
 const Panigation = () => {
   const { panigation, setPanigation, MaxPagesLength } = useTask();
 
-  if (panigation.totalPage < 1 || !panigation) {
+  if (panigation.totalPage <= 1 || !panigation) {
     return null;
   }
   return (

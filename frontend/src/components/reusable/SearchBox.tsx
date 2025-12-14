@@ -41,15 +41,15 @@ const SearchBox = () => {
       setFilteredTasks([...Tasks].reverse());
       return;
     }
-    const data: task[] = filteredTasks.filter((d) => {
-      const findText = d.title.toLowerCase();
+    const data: task[] = Tasks.filter((d) => {
+      const searchText = d.title.toLowerCase();
       const lowerText = text.toLowerCase();
       if (searchBy.value === "description") {
         const findDesc = d.description?.toLowerCase() || "";
         return findDesc.startsWith(lowerText) || findDesc.includes(lowerText);
       }
-      return findText.startsWith(lowerText) || findText.includes(lowerText);
-    });
+      return searchText.startsWith(lowerText) || searchText.includes(lowerText);
+    }).reverse();
     if (!data.length) {
       console.log("empty");
     }
@@ -102,14 +102,14 @@ const SearchBox = () => {
         </div>
         <div className="p-2 px-3 overflow-hidden">
           <div className="flex flex-col gap-2 h-full overflow-y-scroll no-scrollbar">
-            {loading || !filteredTasks.length ? (
+            {loading ? (
               [...Array(6)].map((_, index) => {
                 return (
                   <div
                     key={index}
-                    className="grid grid-cols-[auto_24px] gap-1 h-10"
+                    className="grid grid-cols-[auto_24px] gap-1 h-12"
                   >
-                    <div className="w-full h-10">
+                    <div className="w-full h-12">
                       <SkeletonLoader />
                     </div>
                     <button className="flex items-center justify-center">
@@ -131,12 +131,30 @@ const SearchBox = () => {
                   </div>
                 );
               })
-            ) : (
+            ) : filteredTasks.length > 0 ? (
               <>
                 {filteredTasks.map((item) => (
                   <TaskBox key={item.id} task={item} />
                 ))}
               </>
+            ) : value ? (
+              <div className="h-full w-full flex flex-col items-center justify-center space-y-4">
+                <img
+                  src="/imgs/not-found.svg"
+                  className="max-w-32 md:max-w-48 xl:max-w-56 aspect-square"
+                  alt="No tasks found"
+                />
+                <div>No tasks found for "{value}"</div>
+              </div>
+            ) : (
+              <div className="h-full w-full flex flex-col items-center justify-center space-y-4">
+                <img
+                  src="/imgs/start-search.svg"
+                  className="max-w-32 md:max-w-48 xl:max-w-56 aspect-square"
+                  alt="No tasks found"
+                />
+                <div>Start typing to search tasks...</div>
+              </div>
             )}
           </div>
         </div>

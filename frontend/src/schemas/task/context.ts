@@ -1,6 +1,6 @@
 import type { Priority } from "./priority";
 import type { Status } from "./status";
-import type { task } from "./Task";
+import type { FilterOption, List, order, SortOption, task } from "./Task";
 
 export interface Panigation {
   currPage: number;
@@ -18,7 +18,15 @@ export interface TaskContextType {
   Tasks: task[];
   setTasks: React.Dispatch<React.SetStateAction<task[]>>;
   Task: task | undefined;
+  caches: task[];
   setTask: React.Dispatch<React.SetStateAction<task | undefined>>;
   priorities: Priority[];
   statuses: Status[];
+  list: List;
+  filterOption: FilterOption;
+  setFilterOption: React.Dispatch<React.SetStateAction<FilterOption>>;
+  sortOption: SortOption;
+  setSortOption: React.Dispatch<React.SetStateAction<SortOption>>;
+  sortOrder: order;
+  setSortOrder: React.Dispatch<React.SetStateAction<order>>;
 }
