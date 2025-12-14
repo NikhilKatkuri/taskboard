@@ -11,7 +11,7 @@ export default function usePopMenu<T>(initialValue: T): [
   {
     orderBy: (order: order) => void;
     SelectOption: (option: T) => void;
-  }
+  },
 ] {
   const [state, setState] = useState<PopMenuOption<T>>({
     order: "asc",

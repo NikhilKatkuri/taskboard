@@ -61,16 +61,16 @@ const SearchBox = () => {
       onClick={() => {
         toggleSearchBox();
       }}
-      className="fixed top-0 left-0 h-screen w-screen bg-gray-900/10 flex items-center justify-center px-3 z-20 backdrop-blur-sm"
+      className="fixed top-0 left-0 z-20 flex h-screen w-screen items-center justify-center bg-gray-900/10 px-3 backdrop-blur-sm"
     >
       <div
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="w-full max-w-lg xl:max-w-2xl h-120  bg-white rounded-xl   grid grid-cols-1 grid-rows-[auto_1fr_auto] "
+        className="grid h-120 w-full max-w-lg grid-cols-1 grid-rows-[auto_1fr_auto] rounded-xl bg-white xl:max-w-2xl"
       >
         <div className="flex items-center gap-1 border-b border-gray-300 px-3 py-2">
-          <div className="flex items-center py-2 space-x-2 w-full">
+          <div className="flex w-full items-center space-x-2 py-2">
             <span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,16 +97,16 @@ const SearchBox = () => {
           </div>
           <div className=""></div>
         </div>
-        <div className="p-2 px-3 overflow-hidden">
-          <div className="flex flex-col gap-2 h-full overflow-y-scroll no-scrollbar">
+        <div className="overflow-hidden p-2 px-3">
+          <div className="no-scrollbar flex h-full flex-col gap-2 overflow-y-scroll">
             {loading ? (
               [...Array(6)].map((_, index) => {
                 return (
                   <div
                     key={index}
-                    className="grid grid-cols-[auto_24px] gap-1 h-12"
+                    className="grid h-12 grid-cols-[auto_24px] gap-1"
                   >
-                    <div className="w-full h-12">
+                    <div className="h-12 w-full">
                       <SkeletonLoader />
                     </div>
                     <button className="flex items-center justify-center">
@@ -135,19 +135,19 @@ const SearchBox = () => {
                 ))}
               </>
             ) : value ? (
-              <div className="h-full w-full flex flex-col items-center justify-center space-y-4">
+              <div className="flex h-full w-full flex-col items-center justify-center space-y-4">
                 <img
                   src="/imgs/not-found.svg"
-                  className="max-w-32 md:max-w-48 xl:max-w-56 aspect-square"
+                  className="aspect-square max-w-32 md:max-w-48 xl:max-w-56"
                   alt="No tasks found"
                 />
                 <div>No tasks found for "{value}"</div>
               </div>
             ) : (
-              <div className="h-full w-full flex flex-col items-center justify-center space-y-4">
+              <div className="flex h-full w-full flex-col items-center justify-center space-y-4">
                 <img
                   src="/imgs/start-search.svg"
-                  className="max-w-32 md:max-w-48 xl:max-w-56 aspect-square"
+                  className="aspect-square max-w-32 md:max-w-48 xl:max-w-56"
                   alt="No tasks found"
                 />
                 <div>Start typing to search tasks...</div>
@@ -155,8 +155,8 @@ const SearchBox = () => {
             )}
           </div>
         </div>
-        <div className="h-16 flex items-center justify-between px-3">
-          <div className="w-48 scale-90 ">
+        <div className="flex h-16 items-center justify-between px-3">
+          <div className="w-48 scale-90">
             <Select
               status={searchBy}
               label={searchOption[0]}
@@ -167,7 +167,7 @@ const SearchBox = () => {
           </div>
           <p className="text-center">
             <span className="text-xs">Search by</span>{" "}
-            <span className="font-medium bg-linear-120 from-sky-600 to-rose-500 bg-clip-text text-transparent">
+            <span className="bg-linear-120 from-sky-600 to-rose-500 bg-clip-text font-medium text-transparent">
               Nikhil
             </span>
           </p>

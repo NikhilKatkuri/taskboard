@@ -28,10 +28,10 @@ const ConfirmDialog = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full mx-4 animate-scale-in"
+        className="animate-scale-in mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-2xl"
       >
-        <div className="flex items-start gap-4 mb-4">
-          <div className="shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+        <div className="mb-4 flex items-start gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -48,30 +48,30 @@ const ConfirmDialog = ({
             </svg>
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="mb-2 text-lg font-semibold text-gray-900">
               {title}
             </h3>
             <p className="text-sm text-gray-600">{message}</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 mt-6">
+        <div className="mt-6 flex items-center justify-end gap-3">
           <button
             onClick={onCancel}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {cancelText}
           </button>
           <button
             onClick={onConfirm}
             disabled={isLoading}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4"
+                  className="h-4 w-4 animate-spin"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

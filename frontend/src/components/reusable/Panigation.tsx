@@ -7,8 +7,8 @@ const Panigation = () => {
     return null;
   }
   return (
-    <div className=" w-full flex items-center absolute bottom-0 py-3 h-16 bg-linear-90 from-white/80 via-gray/50 to-white/80 max-w-2xl mx-auto justify-center">
-      <nav className="w-full sm:w-auto h-10  flex  items-center justify-center gap-1 sm:max-w-lg">
+    <div className="via-gray/50 absolute bottom-0 mx-auto flex h-16 w-full max-w-2xl items-center justify-center bg-linear-90 from-white/80 to-white/80 py-3">
+      <nav className="flex h-10 w-full items-center justify-center gap-1 sm:w-auto sm:max-w-lg">
         <button
           onClick={() => {
             setPanigation((prev) => ({
@@ -17,9 +17,9 @@ const Panigation = () => {
             }));
           }}
           disabled={panigation.currPage === 0}
-          className={`max-sm:aspect-square text-sm h-10 flex items-center font-medium gap-2 px-2 rounded-lg  ${
+          className={`flex h-10 items-center gap-2 rounded-lg px-2 text-sm font-medium max-sm:aspect-square ${
             panigation.currPage === 0
-              ? "opacity-50 cursor-not-allowed"
+              ? "cursor-not-allowed opacity-50"
               : "cursor-pointer hover:bg-gray-200/60"
           } bg-transparent transition-colors md:pr-3`}
         >
@@ -41,7 +41,7 @@ const Panigation = () => {
           </span>
           <p className="max-sm:hidden">Previous</p>
         </button>
-        <ul className=" h-10 w-full flex items-center justify-center">
+        <ul className="flex h-10 w-full items-center justify-center">
           {[...Array(panigation.totalPage)].map((_, index) => {
             const isActive = index === panigation.currPage;
             const startPage = Math.max(
@@ -63,10 +63,10 @@ const Panigation = () => {
                   }));
                 }}
                 key={index}
-                className={`h-8 w-8 flex items-center text-gray-700 justify-center mx-1 rounded-lg cursor-pointer hover:bg-gray-200/60 transition-colors ${
+                className={`mx-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-700 transition-colors hover:bg-gray-200/60 ${
                   isActive
                     ? "border border-black/20 font-medium"
-                    : "bg-transparent "
+                    : "bg-transparent"
                 }`}
               >
                 {index + 1}
@@ -82,13 +82,11 @@ const Panigation = () => {
             }));
           }}
           disabled={panigation.currPage === panigation.totalPage - 1}
-          className={`max-sm:aspect-square text-sm h-10 flex items-center font-medium gap-2 justify-center px-2 rounded-lg    bg-transparent transition-colors
-                  ${
-                    panigation.currPage === panigation.totalPage - 1
-                      ? "opacity-50 cursor-not-allowed"
-                      : "cursor-pointer hover:bg-gray-200/60"
-                  } 
-                  md:pl-3`}
+          className={`flex h-10 items-center justify-center gap-2 rounded-lg bg-transparent px-2 text-sm font-medium transition-colors max-sm:aspect-square ${
+            panigation.currPage === panigation.totalPage - 1
+              ? "cursor-not-allowed opacity-50"
+              : "cursor-pointer hover:bg-gray-200/60"
+          } md:pl-3`}
         >
           <p className="max-sm:hidden">Next</p>
           <span>

@@ -68,7 +68,7 @@ const Task = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setData((prev) => ({ ...prev, [e.target.name]: e.target.value } as task));
+    setData((prev) => ({ ...prev, [e.target.name]: e.target.value }) as task);
   };
 
   useEffect(() => {
@@ -127,18 +127,18 @@ const Task = () => {
   return (
     <>
       <div className="h-screen w-screen sm:p-2 lg:p-3 xl:p-4">
-        <section className="h-full w-full  sm:border border-gray-400 rounded-xl grid grid-cols-1 lg:grid-cols-2 gap-2 overflow-hidden">
-          <aside className="hidden lg:flex w-full h-full flex-col items-center justify-center bg-linear-to-br from-slate-50 via-blue-50 to-purple-50  overflow-hidden relative p-8">
-            <div className="absolute inset-0 opacity-30 overflow-hidden">
-              <div className="absolute top-10 right-10 w-32 h-32 bg-blue-200 rounded-full blur-3xl animate-rotate-slow"></div>
-              <div className="absolute bottom-20 left-10 w-40 h-40 bg-purple-200 rounded-full blur-3xl animate-rotate-slow-reverse"></div>
+        <section className="grid h-full w-full grid-cols-1 gap-2 overflow-hidden rounded-xl border-gray-400 sm:border lg:grid-cols-2">
+          <aside className="relative hidden h-full w-full flex-col items-center justify-center overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-purple-50 p-8 lg:flex">
+            <div className="absolute inset-0 overflow-hidden opacity-30">
+              <div className="animate-rotate-slow absolute top-10 right-10 h-32 w-32 rounded-full bg-blue-200 blur-3xl"></div>
+              <div className="animate-rotate-slow-reverse absolute bottom-20 left-10 h-40 w-40 rounded-full bg-purple-200 blur-3xl"></div>
             </div>
 
             <a href="/" className="absolute top-6 left-4 z-20">
-              <img src="/brand/logo.svg" className="w-auto h-5" alt="Logo" />
+              <img src="/brand/logo.svg" className="h-5 w-auto" alt="Logo" />
             </a>
 
-            <div className="relative z-10 flex flex-col items-center justify-center gap-6 text-center max-w-sm">
+            <div className="relative z-10 flex max-w-sm flex-col items-center justify-center gap-6 text-center">
               <img
                 src="/imgs/chore-list.svg"
                 alt="Task planning illustration"
@@ -149,20 +149,20 @@ const Task = () => {
                 <h3 className="text-xl font-semibold text-gray-900">
                   Stay focused & organized
                 </h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm leading-relaxed text-gray-600">
                   Break down your goals into actionable tasks. Set priorities,
                   track progress, and achieve more.
                 </p>
               </div>
             </div>
           </aside>
-          <main className="w-full h-full p-1 sm:p-2 lg:p-3 xl:p-4  grid grid-cols-1 grid-rows-[40px_auto] gap-4">
+          <main className="grid h-full w-full grid-cols-1 grid-rows-[40px_auto] gap-4 p-1 sm:p-2 lg:p-3 xl:p-4">
             <nav className="grid grid-cols-[40px_auto] items-center gap-2">
               <button
                 onClick={() => {
                   nav("/");
                 }}
-                className="aspect-square h-8 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
+                className="flex aspect-square h-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 hover:bg-gray-200"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -182,8 +182,8 @@ const Task = () => {
               <h1 className="text-xl font-semibold">New Task</h1>
             </nav>
             {data && !loading ? (
-              <div className="w-full h-full flex flex-col">
-                <div className="w-full h-auto  max-lg:pb-6 max-lg:pt-8 py-4 flex flex-col gap-4 overflow-y-auto px-2 max-w-lg mx-auto">
+              <div className="flex h-full w-full flex-col">
+                <div className="mx-auto flex h-auto w-full max-w-lg flex-col gap-4 overflow-y-auto px-2 py-4 max-lg:pt-8 max-lg:pb-6">
                   <Input
                     placeholder="e.g. Finish React TaskBoard UI"
                     label="Title"
@@ -199,8 +199,8 @@ const Task = () => {
                     value={data.description}
                     onChange={handleChange}
                   />
-                  <div className="grid grid-cols-2 gap-3 h-16">
-                    <div className="w-full h-full grid grid-cols-1 grid-rows-[20px_auto] gap-1">
+                  <div className="grid h-16 grid-cols-2 gap-3">
+                    <div className="grid h-full w-full grid-cols-1 grid-rows-[20px_auto] gap-1">
                       <label className="text-sm font-medium">Due Date</label>
                       <input
                         type="date"
@@ -211,11 +211,11 @@ const Task = () => {
                               ({
                                 ...prev,
                                 dueAt: new Date(e.target.value).toISOString(),
-                              } as task)
+                              }) as task
                           );
                         }}
                         name="dueAt.date"
-                        className="w-full  text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors"
+                        className="w-full rounded-lg border border-gray-400 px-3 py-2.5 text-sm outline-0 transition-colors focus:border-gray-700"
                       />
                     </div>
                     <Select
@@ -225,7 +225,7 @@ const Task = () => {
                       label={"Priority"}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-3 h-16">
+                  <div className="grid h-16 grid-cols-2 gap-3">
                     <Select
                       status={status}
                       selectActions={statusActions}
@@ -247,7 +247,7 @@ const Task = () => {
                               .split(",")
                               .map((tag) => tag.trim())
                               .filter((tag) => tag.length > 0),
-                          } as task)
+                          }) as task
                       );
                     }}
                     children={
@@ -256,13 +256,13 @@ const Task = () => {
                       </p>
                     }
                   />
-                  <div className="flex items-center my-2 justify-end text-sm gap-4">
-                    <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-100  hover:bg-gray-100 bg-transparent border border-gray-400 flex items-center justify-center cursor-pointer">
+                  <div className="my-2 flex items-center justify-end gap-4 text-sm">
+                    <button className="flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-400 bg-transparent px-5 py-2.5 hover:bg-gray-100 active:bg-gray-100 max-sm:w-1/2">
                       Cancel
                     </button>
                     <button
                       onClick={handleSubmit}
-                      className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-900 active:text-white  hover:bg-gray-900 hover:text-white border border-gray-400 hover:border-gray-900 bg-gray-100 flex items-center justify-center cursor-pointer"
+                      className="flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-400 bg-gray-100 px-5 py-2.5 hover:border-gray-900 hover:bg-gray-900 hover:text-white active:bg-gray-900 active:text-white max-sm:w-1/2"
                     >
                       Submit
                     </button>
@@ -274,10 +274,10 @@ const Task = () => {
                       navActions.goPrev();
                     }}
                     disabled={!navActions.canGoBack()}
-                    className={`h-10 scale-90 px-4 w-full gap-2 overflow-hidden rounded-xl hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer ${
+                    className={`flex h-10 w-full scale-90 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gray-100 px-4 hover:bg-gray-200 ${
                       navActions.canGoBack()
                         ? ""
-                        : "opacity-50 cursor-not-allowed"
+                        : "cursor-not-allowed opacity-50"
                     }`}
                   >
                     <span className="text-sm text-gray-600">
@@ -304,10 +304,10 @@ const Task = () => {
                       navActions.goNext();
                     }}
                     disabled={!navActions.canGoNext()}
-                    className={`h-10 scale-90 px-4 w-full gap-2 overflow-hidden rounded-xl hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer  ${
+                    className={`flex h-10 w-full scale-90 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-gray-100 px-4 hover:bg-gray-200 ${
                       navActions.canGoNext()
                         ? ""
-                        : "opacity-50 cursor-not-allowed"
+                        : "cursor-not-allowed opacity-50"
                     }`}
                   >
                     <span>Next</span>
@@ -331,44 +331,44 @@ const Task = () => {
                 </nav>
               </div>
             ) : (
-              <div className="w-full h-full">
-                <div className="w-full h-full py-8 flex flex-col gap-4 overflow-y-auto px-2 max-w-lg mx-auto">
-                  <div className="w-full  grid grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
+              <div className="h-full w-full">
+                <div className="mx-auto flex h-full w-full max-w-lg flex-col gap-4 overflow-y-auto px-2 py-8">
+                  <div className="grid w-full grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
                     <label className="text-sm font-medium">Title</label>
                     <SkeletonLoader />
                   </div>
-                  <div className="w-full  grid grid-cols-1 grid-rows-[16px_100px] items-start gap-2">
+                  <div className="grid w-full grid-cols-1 grid-rows-[16px_100px] items-start gap-2">
                     <label className="text-sm font-medium">Description</label>
                     <SkeletonLoader />
                   </div>
-                  <div className="grid grid-cols-2 gap-3 h-16">
-                    <div className="w-full  grid grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
+                  <div className="grid h-16 grid-cols-2 gap-3">
+                    <div className="grid w-full grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
                       <label className="text-sm font-medium">Due Date</label>
                       <SkeletonLoader />
                     </div>
-                    <div className="w-full  grid grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
+                    <div className="grid w-full grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
                       <label className="text-sm font-medium">Priority</label>
                       <SkeletonLoader />
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 h-16">
-                    <div className="w-full  grid grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
+                  <div className="grid h-16 grid-cols-2 gap-3">
+                    <div className="grid w-full grid-cols-1 grid-rows-[16px_44px] items-start gap-2">
                       <label className="text-sm font-medium">Status</label>
                       <SkeletonLoader />
                     </div>
                   </div>
-                  <div className="w-full  grid grid-cols-1 grid-rows-[16px_44px_16px] items-start gap-2">
+                  <div className="grid w-full grid-cols-1 grid-rows-[16px_44px_16px] items-start gap-2">
                     <label className="text-sm font-medium">Tags</label>
                     <SkeletonLoader />
                     <p className="text-[11px] text-gray-500">
                       Separate tags with commas.
                     </p>
                   </div>
-                  <div className="flex items-center my-2 justify-end text-sm gap-4">
-                    <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-100  hover:bg-gray-100 bg-transparent border border-gray-400 flex items-center justify-center cursor-pointer">
+                  <div className="my-2 flex items-center justify-end gap-4 text-sm">
+                    <button className="flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-400 bg-transparent px-5 py-2.5 hover:bg-gray-100 active:bg-gray-100 max-sm:w-1/2">
                       Cancel
                     </button>
-                    <button className="max-sm:w-1/2 w-36 px-5 py-2.5 overflow-hidden rounded-full active:bg-gray-900 active:text-white  hover:bg-gray-900 hover:text-white border border-gray-400 hover:border-gray-900 bg-gray-100 flex items-center justify-center cursor-pointer">
+                    <button className="flex w-36 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-gray-400 bg-gray-100 px-5 py-2.5 hover:border-gray-900 hover:bg-gray-900 hover:text-white active:bg-gray-900 active:text-white max-sm:w-1/2">
                       Submit
                     </button>
                   </div>

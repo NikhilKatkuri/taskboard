@@ -13,7 +13,7 @@ export default function useDropDown<T>(initialValue: T): [
     setValue: (value: T) => void;
     setIsOpen: (isOpen: boolean) => void;
     toggleOpen: () => void;
-  }
+  },
 ] {
   const [state, setState] = useState<DropDownOption<T>>({
     label: initialValue,

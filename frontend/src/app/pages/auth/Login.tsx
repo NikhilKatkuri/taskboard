@@ -32,15 +32,15 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex h-screen w-screen items-center flex-row bg-orange-50/40 ">
-        <main className="flex-1 w-full h-full flex flex-col justify-between gap-4 lg:p-4 p-2">
-          <div className="flex mt-3">
+      <div className="flex h-screen w-screen flex-row items-center bg-orange-50/40">
+        <main className="flex h-full w-full flex-1 flex-col justify-between gap-4 p-2 lg:p-4">
+          <div className="mt-3 flex">
             <img src="/brand/logo.svg" />
           </div>
-          <div className="mx-auto max-w-80  w-full h-64">
+          <div className="mx-auto h-64 w-full max-w-80">
             <div className="text-center">
-              <h1 className="text-3xl font-bold mb-2 ">Welcome Back</h1>
-              <p className="text-gray-600 mb-6">
+              <h1 className="mb-2 text-3xl font-bold">Welcome Back</h1>
+              <p className="mb-6 text-gray-600">
                 Please login to your account to continue.
               </p>
             </div>
@@ -51,7 +51,7 @@ const Login = () => {
                     type="email"
                     name="email"
                     placeholder="email address"
-                    className="w-full h-12 rounded-xl border outline-0 px-3 border-gray-400 focus:border-gray-700 transition focus:shadow-sm "
+                    className="h-12 w-full rounded-xl border border-gray-400 px-3 outline-0 transition focus:border-gray-700 focus:shadow-sm"
                     autoComplete="email"
                     required
                     value={formData.email}
@@ -60,17 +60,17 @@ const Login = () => {
                     }
                   />
                 </div>
-                <div className="w-full ">
+                <div className="w-full">
                   <label
                     htmlFor="psd"
-                    className="w-full flex h-12 rounded-xl border outline-0 px-3 border-gray-400 focus-within:border-gray-700 transition focus-within:shadow-sm "
+                    className="flex h-12 w-full rounded-xl border border-gray-400 px-3 outline-0 transition focus-within:border-gray-700 focus-within:shadow-sm"
                   >
                     <input
                       id="psd"
                       type={showPassword ? "text" : "password"}
                       name="password"
                       placeholder="password"
-                      className="w-full h-12 outline-0"
+                      className="h-12 w-full outline-0"
                       autoComplete="current-password"
                       required
                       value={formData.password}
@@ -90,7 +90,7 @@ const Login = () => {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="size-5  text-gray-600"
+                          className="size-5 text-gray-600"
                         >
                           <path
                             strokeLinecap="round"
@@ -105,7 +105,7 @@ const Login = () => {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="size-5  text-gray-600"
+                          className="size-5 text-gray-600"
                         >
                           <path
                             strokeLinecap="round"
@@ -125,7 +125,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isBtnDisabled}
-                  className={`h-12 w-full bg-(--theme-color) rounded-xl text-white font-medium  ${
+                  className={`h-12 w-full rounded-xl bg-(--theme-color) font-medium text-white ${
                     isBtnDisabled ? "cursor-not-allowed" : "cursor-pointer"
                   }`}
                 >
@@ -133,7 +133,7 @@ const Login = () => {
                 </button>
               </form>
               <div className="my-4 text-center">
-                <p className="text-sm ">
+                <p className="text-sm">
                   Don't have an account?{" "}
                   <a href="/register" className="text-blue-600 hover:underline">
                     Register here

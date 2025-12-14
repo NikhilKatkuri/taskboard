@@ -44,18 +44,18 @@ const Registration = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <>
-      <div className="flex h-screen w-screen items-center flex-row bg-orange-50/40 ">
-        <main className="w-full h-full flex flex-col  gap-4 ">
-          <div className="flex mt-3 lg:p-4 p-2">
+      <div className="flex h-screen w-screen flex-row items-center bg-orange-50/40">
+        <main className="flex h-full w-full flex-col gap-4">
+          <div className="mt-3 flex p-2 lg:p-4">
             <img src="/brand/logo.svg" />
           </div>
-          <div className="flex items-center justify-center w-full h-full">
-            <div className="mx-auto max-w-84  w-full">
+          <div className="flex h-full w-full items-center justify-center">
+            <div className="mx-auto w-full max-w-84">
               <div className="text-center">
-                <h1 className="text-2xl font-bold mb-1 ">
+                <h1 className="mb-1 text-2xl font-bold">
                   Welcome to TaskBoard
                 </h1>
-                <p className="text-gray-600 mb-6">
+                <p className="mb-6 text-gray-600">
                   Please register to create a new account.
                 </p>
               </div>
@@ -66,7 +66,7 @@ const Registration = () => {
                       type="text"
                       placeholder="email address"
                       name="email"
-                      className="w-full h-12 rounded-xl border outline-0 px-3 border-gray-400 focus:border-gray-700 transition focus:shadow-sm "
+                      className="h-12 w-full rounded-xl border border-gray-400 px-3 outline-0 transition focus:border-gray-700 focus:shadow-sm"
                       required
                       value={formData.email}
                       onChange={(e) =>
@@ -79,7 +79,7 @@ const Registration = () => {
                       type="text"
                       placeholder="full name"
                       name="fullName"
-                      className="w-full h-12 rounded-xl border outline-0 px-3 border-gray-400 focus:border-gray-700 transition focus:shadow-sm "
+                      className="h-12 w-full rounded-xl border border-gray-400 px-3 outline-0 transition focus:border-gray-700 focus:shadow-sm"
                       required
                       value={formData.fullName}
                       onChange={(e) =>
@@ -87,17 +87,17 @@ const Registration = () => {
                       }
                     />
                   </div>
-                  <div className="w-full ">
+                  <div className="w-full">
                     <label
                       htmlFor="psd"
-                      className="w-full flex h-12 rounded-xl border outline-0 px-3 border-gray-400 focus-within:border-gray-700 transition focus-within:shadow-sm "
+                      className="flex h-12 w-full rounded-xl border border-gray-400 px-3 outline-0 transition focus-within:border-gray-700 focus-within:shadow-sm"
                     >
                       <input
                         id="psd"
                         type={showPassword ? "text" : "password"}
                         placeholder="password"
                         name="password"
-                        className="w-full h-12 outline-0"
+                        className="h-12 w-full outline-0"
                         required
                         value={formData.password}
                         onChange={(e) =>
@@ -116,7 +116,7 @@ const Registration = () => {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="size-5  text-gray-600"
+                            className="size-5 text-gray-600"
                           >
                             <path
                               strokeLinecap="round"
@@ -131,7 +131,7 @@ const Registration = () => {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="size-5  text-gray-600"
+                            className="size-5 text-gray-600"
                           >
                             <path
                               strokeLinecap="round"
@@ -148,17 +148,17 @@ const Registration = () => {
                       </button>
                     </label>
                   </div>
-                  <div className="w-full ">
+                  <div className="w-full">
                     <label
                       htmlFor="psd"
-                      className="w-full flex h-12 rounded-xl border outline-0 px-3 border-gray-400 focus-within:border-gray-700 transition focus-within:shadow-sm "
+                      className="flex h-12 w-full rounded-xl border border-gray-400 px-3 outline-0 transition focus-within:border-gray-700 focus-within:shadow-sm"
                     >
                       <input
                         id="psd"
                         type={showPassword ? "text" : "password"}
                         name="currentPassword"
                         placeholder="Confirm  password"
-                        className="w-full h-12 outline-0"
+                        className="h-12 w-full outline-0"
                         required
                         value={formData.confirmPassword}
                         onChange={(e) =>
@@ -180,7 +180,7 @@ const Registration = () => {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="size-5  text-gray-600"
+                            className="size-5 text-gray-600"
                           >
                             <path
                               strokeLinecap="round"
@@ -195,7 +195,7 @@ const Registration = () => {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="size-5  text-gray-600"
+                            className="size-5 text-gray-600"
                           >
                             <path
                               strokeLinecap="round"
@@ -215,7 +215,7 @@ const Registration = () => {
                   <button
                     type="submit"
                     disabled={isBtnDisabled}
-                    className={`h-12 w-full bg-(--theme-color) rounded-xl text-white font-medium  ${
+                    className={`h-12 w-full rounded-xl bg-(--theme-color) font-medium text-white ${
                       isBtnDisabled ? "cursor-not-allowed" : "cursor-pointer"
                     }`}
                   >
@@ -223,7 +223,7 @@ const Registration = () => {
                   </button>
                 </form>
                 <div className="my-4 text-center">
-                  <p className="text-sm ">
+                  <p className="text-sm">
                     Already have an account?{" "}
                     <a href="/login" className="text-blue-600 hover:underline">
                       login

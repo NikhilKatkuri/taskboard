@@ -73,22 +73,22 @@ const TaskCard = ({ task, onDelete }: TaskCardProps) => {
       onClick={() => {
         navigate(`/tasks/${task._id}`);
       }}
-      className="w-full h-auto max-h-40 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all cursor-pointer group"
+      className="group h-auto max-h-40 w-full cursor-pointer rounded-lg border border-gray-200 bg-white p-4 transition-all hover:border-gray-300 hover:shadow-md"
     >
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate text-sm font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
             {task.title}
           </h3>
           {task.description && (
-            <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+            <p className="mt-1 line-clamp-2 text-xs text-gray-600">
               {task.description}
             </p>
           )}
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex shrink-0 items-center gap-2">
           <span
-            className={`px-2.5 py-1 text-xs font-medium border rounded-full whitespace-nowrap ${getPriorityColor(
+            className={`rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap ${getPriorityColor(
               task.priority
             )}`}
           >
@@ -99,7 +99,7 @@ const TaskCard = ({ task, onDelete }: TaskCardProps) => {
               e.stopPropagation();
               setShowConfirm(true);
             }}
-            className="aspect-square h-8 w-8 overflow-hidden rounded-full hover:bg-red-100 bg-gray-100 flex items-center justify-center cursor-pointer transition-colors group/delete"
+            className="group/delete flex aspect-square h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 transition-colors hover:bg-red-100"
             title="Delete task"
           >
             <svg
@@ -108,7 +108,7 @@ const TaskCard = ({ task, onDelete }: TaskCardProps) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-4 text-gray-600 group-hover/delete:text-red-600 transition-colors"
+              className="size-4 text-gray-600 transition-colors group-hover/delete:text-red-600"
             >
               <path
                 strokeLinecap="round"
@@ -121,11 +121,11 @@ const TaskCard = ({ task, onDelete }: TaskCardProps) => {
       </div>
 
       {task.tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
+        <div className="mb-3 flex flex-wrap gap-1.5">
           {task.tags.slice(0, 3).map((tag, index) => (
             <span
               key={index}
-              className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs rounded-full"
+              className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-700"
             >
               {tag}
             </span>
@@ -138,9 +138,9 @@ const TaskCard = ({ task, onDelete }: TaskCardProps) => {
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-2 pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between gap-2 border-t border-gray-100 pt-3">
         <span
-          className={`px-2.5 py-1 text-xs font-medium rounded-full ${getStatusColor(
+          className={`rounded-full px-2.5 py-1 text-xs font-medium ${getStatusColor(
             task.status
           )}`}
         >

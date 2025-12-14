@@ -39,29 +39,29 @@ const Home = () => {
     setFilterOption(value);
   }
   return (
-    <div className="h-screen w-full relative">
+    <div className="relative h-screen w-full">
       <Navbar filter={filterView} Sort={sortView} />
       <section
-        className={`h-[calc(100vh-4rem)] w-full max-w-2xl px-2 sm:px-4   flex flex-col items-center justify-center pb-3  mx-auto relative`}
+        className={`relative mx-auto flex h-[calc(100vh-4rem)] w-full max-w-2xl flex-col items-center justify-center px-2 pb-3 sm:px-4`}
       >
-        <div className="h-full w-full max-w-2xl scroll-smooth overflow-y-scroll no-scrollbar">
+        <div className="no-scrollbar h-full w-full max-w-2xl overflow-y-scroll scroll-smooth">
           {!(data && data.length > 0) ? (
-            <div className="h-full w-full flex flex-col items-center justify-center gap-4">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-4">
               <img
                 src="/imgs/no-task.svg"
-                className="aspect-square max-w-64 md:max-w-80  xxl:max-w-md"
+                className="xxl:max-w-md aspect-square max-w-64 md:max-w-80"
               />
-              <p className="text-gray-500 text-sm font-medium">
+              <p className="text-sm font-medium text-gray-500">
                 No tasks found.
               </p>
-              <p className="text-gray-500 text-xs max-w-72 text-center">
+              <p className="max-w-72 text-center text-xs text-gray-500">
                 Click “Create Task” to add your first task and get started.
               </p>
               <button
                 onClick={() => {
                   nav("/new");
                 }}
-                className="px-4  text-center text-sm font-medium space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer"
+                className="flex h-10 cursor-pointer items-center justify-center space-x-2 overflow-hidden rounded-full bg-gray-100 px-4 text-center text-sm font-medium hover:bg-gray-900 hover:text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +81,7 @@ const Home = () => {
               </button>
             </div>
           ) : (
-            <div className="w-full h-full grid grid-cols-1 max-w-2xl  mx-auto gap-2 py-3">
+            <div className="mx-auto grid h-full w-full max-w-2xl grid-cols-1 gap-2 py-3">
               {viewData(data).map((taskItem) => {
                 return (
                   <TaskCard
@@ -91,17 +91,17 @@ const Home = () => {
                   />
                 );
               })}
-              <div className="h-16 "></div>
+              <div className="h-16"></div>
             </div>
           )}
         </div>
         <Panigation />
-        <div className="flex flex-col sm:hidden gap-3 absolute right-4 sm:-right-3 md:-right-10  bottom-24">
+        <div className="absolute right-4 bottom-24 flex flex-col gap-3 sm:-right-3 sm:hidden md:-right-10">
           <button
             onClick={() => {
               sortView.setShow((prev) => !prev);
             }}
-            className=" h-11 aspect-square  z-10 rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer shadow-lg shadow-blue-300/80"
+            className="z-10 flex aspect-square h-11 cursor-pointer items-center justify-center rounded-full bg-blue-500 text-white shadow-lg shadow-blue-300/80 hover:bg-blue-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ const Home = () => {
             onClick={() => {
               filterView.setShow((prev) => !prev);
             }}
-            className=" h-11 aspect-square  z-10 rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer shadow-lg shadow-blue-300/80"
+            className="z-10 flex aspect-square h-11 cursor-pointer items-center justify-center rounded-full bg-blue-500 text-white shadow-lg shadow-blue-300/80 hover:bg-blue-600"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

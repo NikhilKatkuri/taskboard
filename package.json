@@ -1,0 +1,31 @@
+{
+  "name": "taskboard",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd backend && npm run dev",
+    "dev:client": "cd frontend && npm run dev",
+    "build": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"npm run build:server\" \"npm run build:client\"",
+    "build:server": "cd backend && npm run build",
+    "build:client": "cd frontend && npm run build",
+    "start": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "cd backend && npm start",
+    "start:client": "cd frontend && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NikhilKatkuri/taskboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NikhilKatkuri/taskboard/issues"
+  },
+  "homepage": "https://github.com/NikhilKatkuri/taskboard#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

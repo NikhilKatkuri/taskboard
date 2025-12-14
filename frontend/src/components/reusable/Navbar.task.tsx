@@ -49,12 +49,12 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
   };
 
   return (
-    <header className="w-full sticky top-0 z-10 h-16 bg-white flex items-center justify-between px-4">
+    <header className="sticky top-0 z-10 flex h-16 w-full items-center justify-between bg-white px-4">
       <div className="flex items-center gap-4">
         <a href="/" className="">
           <img
             src="/brand/logo.svg"
-            className="w-auto h-5 max-[440px]:hidden"
+            className="h-5 w-auto max-[440px]:hidden"
           />
           <img
             src="/brand/icon.svg"
@@ -67,7 +67,7 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
           onClick={() => {
             filter.setShow((prev) => !prev);
           }}
-          className="aspect-square max-sm:hidden h-10 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
+          className="flex aspect-square h-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 hover:bg-gray-200 max-sm:hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,7 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
           onClick={() => {
             Sort.setShow((prev) => !prev);
           }}
-          className="aspect-square max-sm:hidden h-10 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
+          className="flex aspect-square h-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 hover:bg-gray-200 max-sm:hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +109,7 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
           onClick={() => {
             toggleSearchBox();
           }}
-          className="aspect-square h-10 overflow-hidden rounded-full hover:bg-gray-200 bg-gray-100 flex items-center justify-center cursor-pointer"
+          className="flex aspect-square h-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 hover:bg-gray-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +130,7 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
           onClick={() => {
             nav("/new");
           }}
-          className="max-[440px]:aspect-square max-[440px]:px-2 min-[440px]:px-4  text-center text-sm font-medium min-[440px]:space-x-2 h-10 overflow-hidden rounded-full hover:bg-gray-900 bg-gray-100 hover:text-white flex items-center justify-center cursor-pointer"
+          className="flex h-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 text-center text-sm font-medium hover:bg-gray-900 hover:text-white max-[440px]:aspect-square max-[440px]:px-2 min-[440px]:space-x-2 min-[440px]:px-4"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -151,24 +151,24 @@ const Navbar = ({ filter, Sort }: NavbarProps) => {
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => profileMenu.setShow((prev) => !prev)}
-            className="aspect-square h-10 overflow-hidden rounded-full hover:bg-blue-600 bg-blue-500 text-white flex items-center justify-center cursor-pointer font-semibold text-sm transition-colors"
+            className="flex aspect-square h-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-blue-500 text-sm font-semibold text-white transition-colors hover:bg-blue-600"
           >
             {user ? getInitials(user.fullName) : "U"}
           </button>
 
           {profileMenu.show && (
-            <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-              <div className="px-4 py-3 border-b border-gray-200">
+            <div className="absolute right-0 z-50 mt-2 w-64 rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
+              <div className="border-b border-gray-200 px-4 py-3">
                 <p className="text-sm font-semibold text-gray-900">
                   {user?.fullName || "User"}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="mt-1 text-xs text-gray-500">
                   {user?.email || "user@example.com"}
                 </p>
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full px-4 py-2 cursor-pointer text-left text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+                className="flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-left text-sm text-red-600 transition-colors hover:bg-red-50"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

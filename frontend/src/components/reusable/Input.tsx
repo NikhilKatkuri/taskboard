@@ -6,14 +6,14 @@ interface BaseInputProps {
 }
 
 interface TextInputProps
-  extends BaseInputProps,
+  extends
+    BaseInputProps,
     Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
   Type?: "text";
 }
 
 interface TextAreaProps
-  extends BaseInputProps,
-    React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  extends BaseInputProps, React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   Type: "text-area";
 }
 
@@ -32,7 +32,7 @@ const Input = ({
       {Type === "text" && (
         <input
           type="text"
-          className="w-full text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors"
+          className="w-full rounded-lg border border-gray-400 px-3 py-2.5 text-sm outline-0 transition-colors focus:border-gray-700"
           placeholder={placeholder}
           required
           {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
@@ -41,7 +41,7 @@ const Input = ({
       {Type === "text-area" && (
         <textarea
           rows={4}
-          className="w-full text-sm py-2.5 rounded-lg border outline-0 px-3 border-gray-400 focus:border-gray-700 transition-colors resize-none"
+          className="w-full resize-none rounded-lg border border-gray-400 px-3 py-2.5 text-sm outline-0 transition-colors focus:border-gray-700"
           placeholder={placeholder}
           required
           {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}

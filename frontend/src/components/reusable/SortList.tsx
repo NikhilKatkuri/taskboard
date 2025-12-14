@@ -35,15 +35,15 @@ function PopMenu<T extends string>({
       onClick={() => {
         visibleState.setShow(false);
       }}
-      className="h-screen w-screen fixed top-0 left-0 flex items-center justify-center bg-black/10 z-20"
+      className="fixed top-0 left-0 z-20 flex h-screen w-screen items-center justify-center bg-black/10"
     >
       <div
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="w-72 h-auto p-4 bg-white rounded-xl shadow-lg"
+        className="h-auto w-72 rounded-xl bg-white p-4 shadow-lg"
       >
-        <div className="text-lg font-semibold mb-4 flex items-center justify-between gap-2">
+        <div className="mb-4 flex items-center justify-between gap-2 text-lg font-semibold">
           <p className="flex items-center gap-2">
             <span>{Icon}</span>
             {label}
@@ -52,7 +52,7 @@ function PopMenu<T extends string>({
             onClick={() => {
               actions.orderBy(state.order === "asc" ? "desc" : "asc");
             }}
-            className={`aspect-square  h-10 overflow-hidden rounded-full hover:bg-gray-900 hover:text-gray-50 active:bg-gray-900 active:text-gray-50 bg-gray-100 flex items-center justify-center cursor-pointer transition-colors duration-200  ${
+            className={`flex aspect-square h-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-gray-100 transition-colors duration-200 hover:bg-gray-900 hover:text-gray-50 active:bg-gray-900 active:text-gray-50 ${
               state.order === "asc" ? "rotate-0" : "rotate-180"
             }`}
           >
@@ -62,7 +62,7 @@ function PopMenu<T extends string>({
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="size-4 "
+              className="size-4"
             >
               <path
                 strokeLinecap="round"
@@ -81,9 +81,9 @@ function PopMenu<T extends string>({
                     actions.SelectOption(option);
                     visibleState.setShow(false);
                   }}
-                  className={`p-2 w-full text-left  rounded-lg cursor-pointer transition-colors duration-200 flex items-center gap-2 ${
+                  className={`flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 text-left transition-colors duration-200 ${
                     state.option === option
-                      ? "bg-blue-100 text-blue-600 font-medium"
+                      ? "bg-blue-100 font-medium text-blue-600"
                       : "hover:bg-gray-100"
                   }`}
                 >

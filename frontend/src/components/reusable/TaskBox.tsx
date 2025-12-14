@@ -25,24 +25,24 @@ const TaskBox = ({ task }: TaskBoxProps) => {
   return (
     <div
       onClick={() => navigate(`/tasks/${task._id}`)}
-      className="w-full h-auto p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all cursor-pointer group"
+      className="group h-auto w-full cursor-pointer rounded-lg border border-gray-200 bg-white p-4 transition-all hover:border-gray-300 hover:shadow-md"
     >
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+      <div className="mb-3 flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h3 className="truncate text-sm font-semibold text-gray-900 transition-colors group-hover:text-blue-600">
             {task.title}
           </h3>
           {task.description && (
-            <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+            <p className="mt-1 line-clamp-2 text-xs text-gray-600">
               {task.description}
             </p>
           )}
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-2 pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between gap-2 border-t border-gray-100 pt-3">
         <span
-          className={`px-2.5 py-1 text-xs font-medium border rounded-full whitespace-nowrap shrink-0 ${getPriorityColor(
+          className={`shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap ${getPriorityColor(
             task.priority
           )}`}
         >
