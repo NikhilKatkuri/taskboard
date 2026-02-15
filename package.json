@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"pnpm run dev:server\" \"pnpm run dev:client\"",
-    "dev:server": "cd backend && pnpm run dev",
-    "dev:client": "cd frontend && pnpm run dev",
-    "build": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"pnpm run build:server\" \"pnpm run build:client\"",
-    "build:server": "cd backend && pnpm run build",
-    "build:client": "cd frontend && pnpm run build",
-    "start": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"pnpm run start:server\" \"pnpm run start:client\"",
-    "start:server": "cd backend && pnpm start",
-    "start:client": "cd frontend && pnpm start"
+    "dev": "concurrently --names \"SERVER,WEB\" --prefix-colors \"blue,green\" \"pnpm run dev:server\" \"pnpm run dev:client\"",
+    "dev:server": "cd server && pnpm run dev",
+    "dev:client": "cd client/web && pnpm run dev",
+    "build": "concurrently --names \"SERVER,WEB\" --prefix-colors \"blue,green\" \"pnpm run build:server\" \"pnpm run build:client\"",
+    "build:server": "cd server && pnpm run build",
+    "build:client": "cd client/web && pnpm run build",
+    "start": "concurrently --names \"SERVER,WEB\" --prefix-colors \"blue,green\" \"pnpm run start:server\" \"pnpm run start:client\"",
+    "start:server": "cd server && pnpm start",
+    "start:client": "cd client/web && pnpm start"
   },
   "repository": {
     "type": "git",

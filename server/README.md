@@ -23,7 +23,7 @@ RESTful API built with Express 5 and TypeScript, providing secure authentication
 ## 📁 Project Structure
 
 ```
-backend/
+server/
 ├── src/
 │   ├── server.ts                 # Application entry point
 │   ├── controllers/

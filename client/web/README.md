@@ -50,7 +50,7 @@ Taskboard Frontend is a full-featured task management application built with Rea
 
    ```bash
    git clone https://github.com/NikhilKatkuri/taskboard.git
-   cd taskboard/frontend
+   cd taskboard/client/web
    ```
 
 2. **Install dependencies**
@@ -88,7 +88,7 @@ Taskboard Frontend is a full-featured task management application built with Rea
 ## 📁 Project Structure
 
 ```
-frontend/
+web/
 ├── src/
 │   ├── app/
 │   │   ├── App.tsx                    # Main app component with routing

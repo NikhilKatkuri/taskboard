@@ -1,6 +1,6 @@
 # Taskboard
 
-<image src="./frontend/public/brand/logo.svg" alt="Taskboard Logo" width="420"  style="margin: 20px 0px 20px 0px;" />
+<image src="./client/web/public/brand/logo.svg" alt="Taskboard Logo" width="420"  style="margin: 20px 0px 20px 0px;" />
 
 <svg width="420" height="auto" viewBox="0 0 116 17" fill="none" style="margin: 20px 0px 20px 0px;" xmlns="http://www.w3.org/2000/svg">
 <path d="M0.819336 2.51225V0.623047H12.0764V2.51225H7.53809V15.1685H5.35059V2.51225H0.819336Z" fill="white"/>
@@ -59,17 +59,18 @@ A full-stack task management application built with React, TypeScript, Node.js, 
 
 ```
 taskboard/
-├── frontend/          # React frontend application
-│   ├── src/
-│   │   ├── app/      # Main app components and pages
-│   │   ├── components/  # Reusable UI components
-│   │   ├── context/  # React Context providers
-│   │   ├── hooks/    # Custom React hooks
-│   │   ├── schemas/  # TypeScript types and schemas
-│   │   └── utils/    # Utility functions
-│   └── public/       # Static assets
+├── client/
+│   └── web/          # React frontend application
+│       ├── src/
+│       │   ├── app/      # Main app components and pages
+│       │   ├── components/  # Reusable UI components
+│       │   ├── context/  # React Context providers
+│       │   ├── hooks/    # Custom React hooks
+│       │   ├── schemas/  # TypeScript types and schemas
+│       │   └── utils/    # Utility functions
+│       └── public/       # Static assets
 │
-└── backend/          # Express backend API
+└── server/           # Express backend API
     └── src/
         ├── controllers/  # Route controllers
         ├── middleware/   # middleware for authentication.
@@ -99,14 +100,14 @@ taskboard/
 
    ```bash
    npm install
-   cd backend && npm install
-   cd ../frontend && npm install
-   cd ..
+   cd server && npm install
+   cd ../client/web && npm install
+   cd ../..
    ```
 
 3. **Set up environment variables**
 
-   Create a `.env` file in the `backend` directory:
+   Create a `.env` file in the `server` directory:
 
    ```env
    PORT=5000
@@ -123,15 +124,15 @@ taskboard/
    npm run dev
    ```
 
-   This will start both the backend (port 5000) and frontend (port 5173) concurrently.
+   This will start both the server (port 5000) and web (port 5173) concurrently.
 
    Or start them individually:
 
    ```bash
-   # Backend only
+   # Server only
    npm run dev:server
 
-   # Frontend only
+   # Web only
    npm run dev:client
    ```
 
@@ -139,17 +140,17 @@ taskboard/
 
 ### Root Directory
 
-- `npm run dev` - Start both frontend and backend in development mode
-- `npm run build` - Build both frontend and backend for production
-- `npm start` - Start both frontend and backend in production mode
+- `npm run dev` - Start both web and server in development mode
+- `npm run build` - Build both web and server for production
+- `npm start` - Start both web and server in production mode
 
-### Backend
+### Server
 
-- `npm run dev` - Start backend with nodemon (hot reload)
+- `npm run dev` - Start server with nodemon (hot reload)
 - `npm run build` - Compile TypeScript to JavaScript
-- `npm start` - Run compiled backend
+- `npm start` - Run compiled server
 
-### Frontend
+### Web
 
 - `npm run dev` - Start Vite dev server
 - `npm run build` - Build for production
