@@ -14,9 +14,20 @@ const app: Express = express();
 // Middleware
 app.use(
   cors({
-    origin: process.env["CLIENT_URL"] || "http://localhost:5000",
+    origin: (origin, callback) => {
+      if (process.env["CLIENT_URL"]) {
+        const whitelist = process.env["CLIENT_URL"].split(",");
+        if (whitelist.indexOf(origin!) !== -1 || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      } else {
+        callback(null, true);
+      }
+    },
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 

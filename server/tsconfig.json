@@ -3,10 +3,10 @@
     // Language and Environment
     "target": "ES2020", // Compile to ES2020 (modern Node.js)
     "lib": ["ES2020"], // Include ES2020 library definitions
-    "module": "commonjs", // Output CommonJS modules for Node.js
+    "module": "nodenext", // Output CommonJS modules for Node.js
 
     // Module Resolution
-    "moduleResolution": "node", // Use Node.js module resolution strategy
+    "moduleResolution": "nodenext", // Use Node.js module resolution strategy
     "resolveJsonModule": true, // Allow importing JSON files
     "allowSyntheticDefaultImports": true, // Allow default imports from modules
     "esModuleInterop": true, // Enable CommonJS/ES module interop
@@ -47,14 +47,14 @@
     "emitDecoratorMetadata": true, // Emit metadata for decorators
 
     // Path Mapping
-    "baseUrl": ".",
+
     "paths": {
-      "@/*": ["src/*"],
-      "@models/*": ["src/models/*"],
-      "@controllers/*": ["src/controllers/*"],
-      "@routes/*": ["src/routes/*"],
-      "@middleware/*": ["src/middleware/*"],
-      "@types/*": ["src/types/*"]
+      "@/*": ["./src/*"],
+      "@models/*": ["./src/models/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@types/*": ["./src/types/*"]
     }
   },
 

@@ -3,7 +3,7 @@ import express from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { getCurrentUser, login, register } from "../controllers/authController";
 
-const authRoutes = express.Router();
+const authRoutes: express.Router = express.Router();
 
 authRoutes.post(
   "/register",

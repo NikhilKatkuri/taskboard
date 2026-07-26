@@ -7,7 +7,7 @@ import {
 
 import express from "express";
 
-const taskRoutes = express.Router();
+const taskRoutes: express.Router = express.Router();
 
 taskRoutes.get("/", getTasks);
 taskRoutes.post("/create", createTask);

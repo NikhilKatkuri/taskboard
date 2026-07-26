@@ -115,6 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isLoading: false,
         error: errorMessage,
       }));
+      console.error("Login error:", error);
       return { success: false, error: errorMessage };
     }
   }, []);
