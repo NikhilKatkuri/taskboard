@@ -1,31 +1,35 @@
-import { createStaticNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Splash from "../features/loaders/screens/Splash";
 import Login from "../features/auth/screens/login";
 import Registration from "../features/auth/screens/registration";
+import Home from "../features/task-manager/screens/Home";
 
-const isSignedIn = false;
+export const ROUTES = {
+  SPLASH: "Splash",
+  LOGIN: "Login",
+  REGISTER: "Register",
+} as const;
 
-const RootStack = createNativeStackNavigator({
-  initialRouteName: "Splash",
+const AuthStack = createNativeStackNavigator({
+  initialRouteName: "Login",
   screenOptions: {
     headerShown: false,
-    backBehavior: "history",
   },
   screens: {
-    Splash: {
-      screen: Splash,
-    },
-    Login: {
-      if: () => !isSignedIn,
-      screen: Login,
-    },
-    Register: {
-      if: () => !isSignedIn,
-      screen: Registration,
-    },
+    [ROUTES.LOGIN]: Login,
+    [ROUTES.REGISTER]: Registration,
   },
 });
 
-const RootNavigation = createStaticNavigation(RootStack);
-export default RootNavigation;
+const AppStack = createNativeStackNavigator({
+  screenOptions: {
+    headerShown: false,
+  },
+  screens: {
+    Home
+  },
+});
+
+export {
+  AppStack,
+  AuthStack,
+}

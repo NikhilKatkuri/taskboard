@@ -1,18 +1,26 @@
 import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
-import RootNavigation from "./src/navigation/root-navigation";
+import { AppStack, AuthStack } from "./src/navigation/root-navigation";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import AuthProvider, { useAuth } from "./src/provider/auth";
+import { createStaticNavigation } from "@react-navigation/native";
+import appStyles from "./src/components/styles";
 
 // Keep the splash screen visible while loading resources
 SplashScreen.preventAutoHideAsync();
 
+function AppRouter() {
+  const { token } = useAuth();
+  const Navigation = createStaticNavigation(token ? AppStack : AuthStack);
+  return <Navigation />;
+}
+
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
     "GoogleSans-Italic": require("./assets/fonts/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf"),
-    "GoogleSans": require("./assets/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf"),
+    GoogleSans: require("./assets/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -26,16 +34,11 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-      <RootNavigation />
-      <StatusBar style="auto" />
-    </SafeAreaView>
+    <AuthProvider>
+      <SafeAreaView style={[appStyles.background]} onLayout={onLayoutRootView}>
+        <AppRouter />
+        <StatusBar style="auto" />
+      </SafeAreaView>
+    </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});

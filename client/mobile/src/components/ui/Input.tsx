@@ -1,21 +1,29 @@
-import { StyleSheet, View, TextInput, TextInputProps, Pressable, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TextInputProps,
+  Pressable,
+  Text,
+} from "react-native";
 import colors from "../../../constants/colors";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 
 interface InputProps extends TextInputProps {}
 
-const Input = (props: InputProps) => {
+const Input = forwardRef<TextInput, InputProps>(({ ...props }, ref) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
     <View style={styles.container}>
-      <TextInput 
-        {...props} 
-        style={[styles.input, props.style]} 
-        secureTextEntry={!isPasswordVisible && props.secureTextEntry} 
+      <TextInput
+        {...props}
+        ref={ref}
+        style={[styles.input, props.style]}
+        secureTextEntry={!isPasswordVisible && props.secureTextEntry}
       />
       {props.secureTextEntry && (
-        <Pressable 
+        <Pressable
           onPress={() => setIsPasswordVisible(!isPasswordVisible)}
           style={styles.toggleButton}
         >
@@ -26,7 +34,9 @@ const Input = (props: InputProps) => {
       )}
     </View>
   );
-};
+});
+
+Input.displayName = "Input";
 
 export default Input;
 

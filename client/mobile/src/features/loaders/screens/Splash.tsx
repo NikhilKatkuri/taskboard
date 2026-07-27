@@ -1,21 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import colors from "../../../../constants/colors";
-import { useNavigation } from "@react-navigation/native";
-import { useEffect } from "react";
 import appStyles from "../../../components/styles";
 
 const Splash = () => {
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    function navigateToLogin() {
-      setTimeout(() => {
-        navigation.navigate("Login" as never);
-      }, 100);
-    }
-    navigateToLogin();
-  }, []);
-
   return (
     <View style={[appStyles.background, appStyles.center]}>
       <Image
