@@ -35,7 +35,11 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <SafeAreaView style={[appStyles.background]} onLayout={onLayoutRootView}>
+      <SafeAreaView
+        edges={["left", "right"]}
+        style={[appStyles.appBackground]}
+        onLayout={onLayoutRootView}
+      >
         <AppRouter />
         <StatusBar style="auto" />
       </SafeAreaView>

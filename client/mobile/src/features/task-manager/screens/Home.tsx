@@ -4,7 +4,7 @@ import Button from "../../../components/ui/button";
 import { deleteValueFor } from "../../../api/storage";
 import { STORAGE_KEYS } from "../../../api";
 import { useAuth } from "../../../provider/auth";
-
+ 
 const Home = () => {
   const { dispatch } = useAuth();
   async function handleLogout() {
@@ -16,12 +16,13 @@ const Home = () => {
   }
   return (
     <View
-      style={[appStyles.background, appStyles.withPadding, appStyles.StackCol]}
+      style={[appStyles.appBackground, appStyles.withPadding, appStyles.StackCol]}
     >
       <Text>Home</Text>
-      <Button onPress={handleLogout} title="Log out" />
+      <Button onPress={handleLogout} title="Log out" /> 
     </View>
   );
 };
 
 export default Home;
+  

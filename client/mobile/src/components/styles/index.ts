@@ -5,6 +5,12 @@ const appStyles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: colors.background,
+    position: "relative",
+  },
+  appBackground: {
+    flex: 1,
+    backgroundColor: colors.appBackground,
+    position: "relative",
   },
   center: {
     alignItems: "center",
@@ -20,6 +26,7 @@ const appStyles = StyleSheet.create({
   },
   withPadding: {
     padding: 16,
+    paddingTop: 24,
   },
   header: {
     fontSize: 32,

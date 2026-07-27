@@ -1,5 +1,6 @@
 const colors = {
-  background: "#FFFFFF",
+  background: "#ffffff",
+  appBackground: "#f9fafb",
   text: "#101828",
   brand: "#0fba3d",
   gray: {
