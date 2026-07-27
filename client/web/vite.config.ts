@@ -4,14 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
   root: path.resolve(__dirname),
   server: {
     port: 3000,
