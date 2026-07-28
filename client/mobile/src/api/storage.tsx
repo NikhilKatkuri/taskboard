@@ -1,26 +1,14 @@
 import * as SecureStore from "expo-secure-store";
 import { STORAGE_KEYS } from ".";
 
-async function save(key: string, value: string) {
-  await SecureStore.setItemAsync(key, value);
-}
+export const save = (key: string, value: string) =>
+  SecureStore.setItemAsync(key, value);
 
-async function getValueFor(key: string): Promise<string | null> {
-  let result = await SecureStore.getItemAsync(key);
-  if (result) {
-    return result;
-  } else {
-    return null;
-  }
-}
+export const getValueFor = (key: string) => SecureStore.getItemAsync(key);
 
-async function deleteValueFor(key: string): Promise<void> {
-  await SecureStore.deleteItemAsync(key);
-}
+export const deleteValueFor = (key: string) => SecureStore.deleteItemAsync(key);
 
-async function isSignedIn(): Promise<boolean> {
+export const isSignedIn = async () => {
   const token = await getValueFor(STORAGE_KEYS.TOKEN);
-  return token !== null;
-}
-
-export { save, getValueFor, isSignedIn, deleteValueFor };
+  return !!token;
+};

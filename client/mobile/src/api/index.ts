@@ -48,6 +48,38 @@ class ApiEndpoints {
       headers: this.headers,
     };
   }
+
+  tasks() {
+    return {
+      url: this.apiConfig.TASKS.BASE,
+      method: "GET",
+      headers: this.headers,
+    };
+  }
+
+  createTask() {
+    return {
+      url: this.apiConfig.TASKS.CREATE,
+      method: "POST",
+      headers: this.headers,
+    };
+  }
+
+  updateTask(id: string) {
+    return {
+      url: this.apiConfig.TASKS.UPDATE(id),
+      method: "PUT",
+      headers: this.headers,
+    };
+  }
+
+  deleteTask(id: string) {
+    return {
+      url: this.apiConfig.TASKS.DELETE(id),
+      method: "DELETE",
+      headers: this.headers,
+    };
+  }
 }
 
 const apiEndpoints = new ApiEndpoints(process.env.EXPO_PUBLIC_BASE_URL!);

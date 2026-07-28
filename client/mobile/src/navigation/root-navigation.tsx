@@ -4,6 +4,7 @@ import Registration from "../features/auth/screens/registration";
 import Home from "../features/task-manager/screens/Home";
 import Search from "../features/task-manager/screens/Search";
 import { TabBarProvider } from "../provider/ui/tabBarProvider";
+import TaskProvider from "../provider/task/task.provider";
 
 export const ROUTES = {
   SPLASH: "Splash",
@@ -28,17 +29,15 @@ const AppStack = createNativeStackNavigator({
     headerShown: false,
   },
   screens: {
-    Home: {
-      screen: Home,
-    },
-    Search: {
-      screen: Search,
-    },
+    Home,
+    Search
   },
 }).with(({ Navigator }) => {
   return (
     <TabBarProvider>
-      <Navigator />
+      <TaskProvider>
+        <Navigator />
+      </TaskProvider>
     </TabBarProvider>
   );
 });

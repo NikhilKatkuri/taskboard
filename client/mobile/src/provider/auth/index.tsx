@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { getValueFor } from "../../api/storage";
 import { STORAGE_KEYS } from "../../api";
 import Splash from "../../features/loaders/screens/Splash";
+import log from "../../utils/logs";
 
 interface AuthContextTypes {
   token: string | null;
@@ -61,17 +62,24 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     let token;
     let user;
     try {
-      [user, token] = await Promise.all([
+      [token, user] = await Promise.all([
         getValueFor(STORAGE_KEYS.TOKEN),
         getValueFor(STORAGE_KEYS.USER),
       ]);
 
+      const _user = user ? await JSON.parse(user) : null;
+      if (!token || !_user) {
+        dispatch({ type: "RESTORE_TOKEN", token: null, user: null });
+        return;
+      }
+
       dispatch({
         type: "RESTORE_TOKEN",
         token,
-        user,
+        user: _user,
       });
     } catch (e) {
+      log.error("boot", e);
       dispatch({ type: "RESTORE_TOKEN", token: null, user: null });
     }
   }
