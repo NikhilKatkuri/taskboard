@@ -5,17 +5,24 @@ import {
   TextInputProps,
   Pressable,
   Text,
+  ViewProps,
 } from "react-native";
 import colors from "../../../constants/colors";
 import { forwardRef, useState } from "react";
 
-interface InputProps extends TextInputProps {}
+interface InputProps extends TextInputProps {
+  containerStyle?: ViewProps["style"];
+  prefixIcon?: React.ReactNode;
+}
 
 const Input = forwardRef<TextInput, InputProps>(({ ...props }, ref) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, props.containerStyle]}>
+      {props.prefixIcon && (
+        <View style={styles.prefixIcon}>{props.prefixIcon}</View>
+      )}
       <TextInput
         {...props}
         ref={ref}
@@ -72,5 +79,10 @@ const styles = StyleSheet.create({
     color: colors.blue[500],
     fontSize: 14,
     fontWeight: "600",
+  },
+  prefixIcon: {
+    marginRight: 2,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

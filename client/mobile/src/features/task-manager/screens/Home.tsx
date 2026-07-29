@@ -4,14 +4,13 @@ import Button from "../../../components/ui/button";
 import { deleteValueFor } from "../../../api/storage";
 import { STORAGE_KEYS } from "../../../api";
 import { useAuth } from "../../../provider/auth";
-import Topbar from "../components/topbar";
-import TaskItem from "../components/task-item";
+import Topbar from "../components/task/topbar";
+import TaskItem from "../components/task/task-item";
 import useTask from "../../../provider/task/useTask";
 
 const Home = () => {
   const { dispatch } = useAuth();
   const { tasks } = useTask();
-
   const handleLogout = async () => {
     await Promise.all([
       deleteValueFor(STORAGE_KEYS.TOKEN),

@@ -1,5 +1,12 @@
-import React, { createContext, useContext, useState, useMemo } from "react";
-import CustomTabBar from "../../components/ui/CustomTabBar";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
+import CustomTabBar from "../../../assets/imgs/CustomTabBar";
+import { SearchControlProvider } from "./searchControl";
 
 type TabBarContextType = {
   activeRoute: string;
@@ -10,13 +17,19 @@ const TabBarContext = createContext<TabBarContextType | undefined>(undefined);
 
 export const TabBarProvider = ({ children }: { children: React.ReactNode }) => {
   const [activeRoute, setActiveRoute] = useState("Home");
-
-  const value = useMemo(() => ({ activeRoute, setActiveRoute }), [activeRoute]);
+  const value = { activeRoute, setActiveRoute };
 
   return (
     <TabBarContext.Provider value={value}>
-      {children}
-      <CustomTabBar activeRoute={activeRoute} setActiveRoute={setActiveRoute} />
+      <SearchControlProvider
+        routeName={activeRoute === "Search" ? "search" : undefined}
+      >
+        {children}
+        <CustomTabBar
+          activeRoute={activeRoute}
+          setActiveRoute={setActiveRoute}
+        />
+      </SearchControlProvider>
     </TabBarContext.Provider>
   );
 };

@@ -30,15 +30,15 @@ const AppStack = createNativeStackNavigator({
   },
   screens: {
     Home,
-    Search
+    Search,
   },
 }).with(({ Navigator }) => {
   return (
-    <TabBarProvider>
-      <TaskProvider>
+    <TaskProvider>
+      <TabBarProvider>
         <Navigator />
-      </TaskProvider>
-    </TabBarProvider>
+      </TabBarProvider>
+    </TaskProvider>
   );
 });
 
