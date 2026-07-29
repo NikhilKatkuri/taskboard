@@ -5,6 +5,8 @@ import { formatDate } from "../../../utils/date";
 
 const TaskItem = ({ ...props }: task) => {
   const dueDate = formatDate(props.dueAt);
+  const priorityColor = getPriorityColor(props.priority);
+  const statusColor = getStatusColor(props.status);
   return (
     <View style={styles.container}>
       <View
@@ -21,18 +23,8 @@ const TaskItem = ({ ...props }: task) => {
             {props.description}
           </Text>
         </View>
-        <View
-          style={[
-            styles.pill,
-            styles[`${props.priority.toLowerCase()}Bg` as StyleKeys],
-          ]}
-        >
-          <Text
-            style={[
-              styles.pillText,
-              styles[`${props.priority.toLowerCase()}Fg` as StyleKeys],
-            ]}
-          >
+        <View style={[styles.pill, priorityColor.bg]}>
+          <Text style={[styles.pillText, priorityColor.txt]}>
             {props.priority}
           </Text>
         </View>
@@ -47,8 +39,8 @@ const TaskItem = ({ ...props }: task) => {
           },
         ]}
       >
-        <View style={[styles.pill, { backgroundColor: "#e0e0e0" }]}>
-          <Text style={[styles.pillText]}>{props.status}</Text>
+        <View style={[styles.pill, statusColor.bg]}>
+          <Text style={[styles.pillText, statusColor.txt]}>{props.status}</Text>
         </View>
 
         <Text style={[styles.body, styles.font]}>
@@ -61,20 +53,34 @@ const TaskItem = ({ ...props }: task) => {
 
 export default TaskItem;
 
-type StyleKeys =
-  | "container"
-  | "header"
-  | "col"
-  | "font"
-  | "body"
-  | "pill"
-  | "pillText"
-  | "mediumBg"
-  | "mediumFg"
-  | "redBg"
-  | "redFg"
-  | "lowBg"
-  | "lowFg";
+export const getPriorityColor = (priority: string) => {
+  switch (priority) {
+    case "High":
+      return { bg: styles.highPriority, txt: styles.highText };
+    case "Medium":
+      return { bg: styles.mediumPriority, txt: styles.mediumText };
+    case "Low":
+      return { bg: styles.lowPriority, txt: styles.lowText };
+    default:
+      return { bg: styles.defaultPriority, txt: styles.defaultText };
+  }
+};
+
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "todo":
+      return { bg: styles.todoStatus, txt: styles.todoText };
+    case "in-progress":
+      return { bg: styles.inProgressStatus, txt: styles.inProgressText };
+    case "review":
+      return { bg: styles.reviewStatus, txt: styles.reviewText };
+    case "done":
+      return { bg: styles.doneStatus, txt: styles.doneText };
+    default:
+      return { bg: styles.todoStatus, txt: styles.todoText };
+  }
+};
+
 const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -111,27 +117,29 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     maxHeight: 28,
+    borderWidth: 0.5,
   },
   pillText: {
     fontSize: 12,
     lineHeight: 16,
+    fontWeight: 600,
   },
-  mediumBg: {
-    backgroundColor: "#fbfb9165",
-  },
-  mediumFg: {
-    color: "#d8d817",
-  },
-  redBg: {
-    backgroundColor: "#f97171",
-  },
-  redFg: {
-    color: "#f97171",
-  },
-  lowBg: {
-    backgroundColor: "#16f20a12",
-  },
-  lowFg: {
-    color: "#078015",
-  },
+  highPriority: { backgroundColor: "#FEE2E2", borderColor: "#FCA5A5" },
+  mediumPriority: { backgroundColor: "#FEF3C7", borderColor: "#FCD34D" },
+  lowPriority: { backgroundColor: "#DCFCE7", borderColor: "#86EFAC" },
+  defaultPriority: { backgroundColor: "#F3F4F6", borderColor: "#D1D5DB" },
+
+  todoStatus: { backgroundColor: "#E5E7EB", borderColor: "#9CA3AF" },
+  inProgressStatus: { backgroundColor: "#DBEAFE", borderColor: "#93C5FD" },
+  reviewStatus: { backgroundColor: "#E9D5FF", borderColor: "#C4B5FD" },
+  doneStatus: { backgroundColor: "#DCFCE7", borderColor: "#86EFAC" },
+
+  highText: { color: "#B91C1C" },
+  mediumText: { color: "#A16207" },
+  lowText: { color: "#15803D" },
+  defaultText: { color: "#374151" },
+  todoText: { color: "#374151" },
+  inProgressText: { color: "#1D4ED8" },
+  reviewText: { color: "#7E22CE" },
+  doneText: { color: "#15803D" },
 });
